@@ -18,7 +18,7 @@ public class CameraPosition {
         camera.position.set(cameraPosition);
         camera.lookAt(cameraLookAt);
         camera.near = 0.1f;
-        camera.far = 600f;
+        camera.far = 300f;
     }
 
 

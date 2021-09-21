@@ -33,7 +33,7 @@ public class UIManager {
     protected StringBuilder stringBuilder;
 
     public UIManager(City city) {
-        this.city=city;
+        this.city = city;
     }
 
 
@@ -63,8 +63,37 @@ public class UIManager {
 
 
         ImageButton castle = buildImageButton("bottoni/castle100.png");
-        //table.add(ib).top().expandX();
+        ImageButton mulino = buildImageButton("bottoni/windmill80.png");
+        ImageButton road = buildImageButton("bottoni/horizon-road80.png");
+        ImageButton left_arrow = buildImageButton("bottoni/left-arrow50.png");
+        ImageButton up_arrow = buildImageButton("bottoni/up-arrow50.png");
+        ImageButton right_arrow = buildImageButton("bottoni/right-arrow50.png");
+        ImageButton hades = buildImageButton("bottoni/hades-symbol50.png");
+
         table.add(castle);
+        table.add(mulino);
+        table.row();
+        table.add(road);
+        table.row();
+        table.add(left_arrow);
+        table.add(up_arrow);
+        table.add(right_arrow);
+        table.row();
+      //  table.add(hades);
+
+      /*  hades.addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (!(event instanceof InputEvent) ||
+                        !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
+                    return false;
+
+
+                city.setHades();
+                return true;
+            }
+        });*/
+
         castle.addListener(new EventListener() {
             @Override
             public boolean handle(Event event) {
@@ -78,8 +107,8 @@ public class UIManager {
             }
         });
 
-        ImageButton mulino = buildImageButton("bottoni/windmill80.png");
-        table.add(mulino);
+
+
         mulino.addListener(new EventListener() {
             @Override
             public boolean handle(Event event) {
@@ -93,9 +122,8 @@ public class UIManager {
             }
         });
 
-        ImageButton road = buildImageButton("bottoni/horizon-road80.png");
-        table.row();
-        table.add(road);
+
+
         road.addListener(new EventListener() {
             @Override
             public boolean handle(Event event) {
@@ -103,19 +131,13 @@ public class UIManager {
                         !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
                     return false;
 
-city.getReteStradale().startRoad();
+                city.getReteStradale().startRoad();
                 return true;
             }
         });
 
-        ImageButton left_arrow = buildImageButton("bottoni/left-arrow50.png");
-        ImageButton up_arrow = buildImageButton("bottoni/up-arrow50.png");
-        ImageButton right_arrow = buildImageButton("bottoni/right-arrow50.png");
 
-        table.row();
-        table.add(left_arrow);
-        table.add(up_arrow);
-        table.add(right_arrow);
+
 
         left_arrow.addListener(new EventListener() {
             @Override
@@ -123,7 +145,7 @@ city.getReteStradale().startRoad();
                 if (!(event instanceof InputEvent) ||
                         !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
                     return false;
-city.getCameraPosition().getCamera().rotateAround(new Vector3(0f, 0f, 0f),
+                city.getCameraPosition().getCamera().rotateAround(new Vector3(0f, 0f, 0f),
                         new Vector3(0f, 1f, 0f), 1f);
                 return true;
             }
@@ -147,7 +169,7 @@ city.getCameraPosition().getCamera().rotateAround(new Vector3(0f, 0f, 0f),
                 if (!(event instanceof InputEvent) ||
                         !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
                     return false;
-                city.getCameraPosition().getCamera().translate(-0.1f, 0, 0);
+                city.getCameraPosition().getCamera().translate(-10f, 0, 0);
                 return true;
             }
         });
