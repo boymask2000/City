@@ -2,6 +2,7 @@ package com.boymask.city.merci;
 
 public class VoceInventario {
 
+
     private TipoMerce tipo;
     private int giacenza;
 
@@ -24,5 +25,13 @@ public class VoceInventario {
     }
     public TipoMerce getTipo() {
         return tipo;
+    }
+
+    @Override
+    public String toString() {
+        return "VoceInventario{" +
+                "tipo=" + tipo +
+                ", giacenza=" + giacenza +
+                '}';
     }
 }

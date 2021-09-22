@@ -4,17 +4,33 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.boymask.city.City;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Edificio {
-    private static List<Edificio> elencoEdifici = new ArrayList<>();
-    private static List<ModelInstance> istanceEdifici = new ArrayList<>();
+    private static int CURRID = 0;
+
+    private final City city;
+
+    private int idEdificio;
+    private Map<Integer, Edificio> estates = new HashMap<>();
+
+
+    private final static List<Edificio> elencoEdifici = new ArrayList<>();
+    private final static List<ModelInstance> istanceEdifici = new ArrayList<>();
+
 
     private final ModelInstance modelInstance;
     private ModelBuilder modelBuilder = new ModelBuilder();
     private Model model;
+    private static AssetManager am = new AssetManager();
+
+    public static Model modelFornaio;
+    public static Model modelPozzo;
 
     private static final String[] filenames = {
             "edifici/obj/house_type01.obj", //
@@ -44,27 +60,51 @@ public class Edificio {
         loadAllModels();
     }
 
-    public Edificio(Model model, int x, int y) {
+    private synchronized int createId() {
+        CURRID++;
+        return CURRID;
+    }
 
+    public Edificio(Model model, City city, int x, int y) {
+        this.city=city;
+        this.idEdificio = createId();
         this.model = model;
         modelInstance = new ModelInstance(model, x, y, 0);
 
         elencoEdifici.add(this);
         istanceEdifici.add(modelInstance);
+
+        estates.put(getIdEdificio(), this);
     }
 
     private static void loadAllModels() {
-        AssetManager am = new AssetManager();
-        for (String f : filenames){
-            System.out.println("Loading "+f);
-            am.load(f, Model.class);}
+
+        for (String f : filenames) {
+            System.out.println("Loading " + f);
+            am.load(f, Model.class);
+        }
         am.finishLoading();
 //        Model model = am.get(fileName, Model.class);
 //        return model;
+
+        modelFornaio = getModel("edifici/obj/house_type21.obj");
+        modelPozzo = getModel("edifici/obj/house_type20.obj");
     }
 
     public static final List<ModelInstance> getIstanceEdifici() {
         return istanceEdifici;
     }
 
+    public static Model getModel(String fileName) {
+        return am.get(fileName, Model.class);
+    }
+
+
+    public int getIdEdificio() {
+        return idEdificio;
+    }
+
+    public City getCity() {
+        return city;
+    }
 }

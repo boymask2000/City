@@ -34,6 +34,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.boymask.city.edifici.Edificio;
+import com.boymask.city.edifici.Fornaio;
+import com.boymask.city.edifici.Pozzo;
+import com.boymask.city.infrastructure.OrderManager;
+import com.boymask.city.merci.TipoMerce;
 import com.boymask.city.street.ReteStradale;
 import com.boymask.city.street.StreetBlock;
 
@@ -66,6 +70,9 @@ public class City extends ApplicationAdapter implements InputProcessor {
     private CameraInputController cameraController;
     private PerspectiveCamera camera;
     private ModelInstance instance;
+
+
+    private OrderManager orderManager= new OrderManager();
 
 
     @Override
@@ -118,11 +125,19 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
 /*for(int i=10; i<22; i++)
         showTree("edifici/obj/house_type"+i+".obj", (i-15)*7,0);*/
-        showTree("edifici/obj/path_long.obj", 0,5);
+        showTree("edifici/obj/house_type01.obj", 0,5);
 
         house = loadModelInstance("edifici/house_type06.g3dj", 5, 5, 0);
 
-        new Edificio(loadModel(fileName), 0, 0);
+       // new Edificio(loadModel(fileName), 0, 0);
+        Fornaio f = new Fornaio(this,10,10);
+        /*for(int i=0; i<7; i++){
+        f.addinInventario(TipoMerce.ACQUA);
+        f.addinInventario(TipoMerce.FARINA);}*/
+       f.produci();
+        Pozzo p = new Pozzo(this,10,20);
+        p.produci();
+
 
 
         house.transform.scale(5f, 5, 5f);
@@ -314,7 +329,7 @@ public class City extends ApplicationAdapter implements InputProcessor {
         return cameraPosition;
     }
 
-    public void setHades() {
-        this.hades = true;
+    public OrderManager getOrderManager() {
+        return orderManager;
     }
 }

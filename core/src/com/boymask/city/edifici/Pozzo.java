@@ -1,11 +1,12 @@
 package com.boymask.city.edifici;
 
 import com.boymask.city.City;
+import com.boymask.city.merci.Merce_Acqua;
 import com.boymask.city.merci.Merce_Pane;
 
-public class Fornaio extends EdificioProduzione{
-    public Fornaio( City city,int x, int y) { //
-        super(modelFornaio, city, new Merce_Pane(),x, y);
+public class Pozzo extends EdificioProduzione{
+    public Pozzo(City city, int x, int y) { //
+        super(modelPozzo,  city,  new Merce_Acqua(),x, y);
     }
 
 

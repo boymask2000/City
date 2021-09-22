@@ -7,7 +7,7 @@ public class Inventario {
 
     private List<VoceInventario> merci = new ArrayList<>();
 
-    public void addMerce(TipoMerce tipo,int n) {
+    public void addMerce(TipoMerce tipo, int n) {
         VoceInventario v = null;
         for (VoceInventario voce : merci)
             if (voce.getTipo() == tipo) {
@@ -15,17 +15,43 @@ public class Inventario {
                 break;
             }
         if (v == null) {
-            v = new VoceInventario(tipo,n);
+            v = new VoceInventario(tipo, n);
             merci.add(v);
         }
         v.increase(n);
 
     }
-    public void addVoce(VoceInventario v ){
+
+    public int getGiacenza(TipoMerce t) {
+        for (VoceInventario m : merci)
+            if (m.getTipo() == t) return m.getGiacenza();
+        return 0;
+    }
+
+    public boolean in(VoceInventario v) {
+
+        for (VoceInventario m : merci)
+            if (v.getTipo() == m.getTipo()) {
+                if (v.getGiacenza() <= m.getGiacenza()) return true;
+                return false;
+            }
+        return false;
+    }
+
+    public void decurta(VoceInventario v) {
+        for (VoceInventario m : merci)
+            if (v.getTipo() == m.getTipo()) {
+                m.setGiacenza(m.getGiacenza() - v.getGiacenza());
+            }
+    }
+
+    public void addVoce(VoceInventario v) {
         merci.add(v);
     }
 
     public List<VoceInventario> getMerci() {
         return merci;
     }
+
+
 }
