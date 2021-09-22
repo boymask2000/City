@@ -6,16 +6,6 @@ public class Order {
     private static int CURRIDORDINE = 0;
     private int idOrdine = 0;
     private int idEdificio;
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "idOrdine=" + idOrdine +
-                ", idEdificio=" + idEdificio +
-                ", tipoMerce=" + tipoMerce +
-                '}';
-    }
-
     private TipoMerce tipoMerce;
 
     public Order(int idEdificio, TipoMerce tipoMerce) {
@@ -37,5 +27,12 @@ public class Order {
     public TipoMerce getTipoMerce() {
         return tipoMerce;
     }
-
+    @Override
+    public String toString() {
+        return "Order{" +
+                "idOrdine=" + idOrdine +
+                ", idEdificio=" + idEdificio +
+                ", tipoMerce=" + tipoMerce +
+                '}';
+    }
 }

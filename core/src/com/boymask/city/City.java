@@ -36,6 +36,7 @@ import com.badlogic.gdx.utils.UBJsonReader;
 import com.boymask.city.edifici.Edificio;
 import com.boymask.city.edifici.Fornaio;
 import com.boymask.city.edifici.Pozzo;
+import com.boymask.city.infrastructure.InventarioGlobale;
 import com.boymask.city.infrastructure.OrderManager;
 import com.boymask.city.merci.TipoMerce;
 import com.boymask.city.street.ReteStradale;
@@ -74,6 +75,9 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
     private OrderManager orderManager= new OrderManager();
 
+
+
+    private InventarioGlobale inventarioGlobale = new InventarioGlobale();
 
     @Override
     public void create() {
@@ -331,5 +335,8 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
     public OrderManager getOrderManager() {
         return orderManager;
+    }
+    public InventarioGlobale getInventarioGlobale() {
+        return inventarioGlobale;
     }
 }
