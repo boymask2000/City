@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.boymask.city.edifici.Edificio;
 import com.boymask.city.infrastructure.InventarioGlobale;
 import com.boymask.city.infrastructure.MerceDisponibile;
+import com.boymask.city.merci.TipoMerce;
 
 public class Carrier extends MovingObject {
     private final InventarioGlobale inventarioGlobale;
@@ -42,8 +43,14 @@ public class Carrier extends MovingObject {
         }
         System.out.println(" trovato !");
         Edificio srcEdificio = Edificio.getEdificioById(m.getIdEdificio());
+        Edificio trgEdificio = searchEdificioTarget(m.getTipoMerce());
         moveTo(srcEdificio.getPosition());
+
         working = true;
         return;
+    }
+
+    private Edificio searchEdificioTarget(TipoMerce tipoMerce) {
+        return null;
     }
 }
