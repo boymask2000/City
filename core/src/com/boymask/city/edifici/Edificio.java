@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Vector3;
 import com.boymask.city.City;
 
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ public class Edificio {
     private static int CURRID = 0;
 
     private final City city;
+
+
+    private final Vector3 position;
 
     private int idEdificio;
     private Map<Integer, Edificio> estates = new HashMap<>();
@@ -31,6 +35,8 @@ public class Edificio {
 
     public static Model modelFornaio;
     public static Model modelPozzo;
+
+
 
     private static final String[] filenames = {
             "edifici/obj/house_type01.obj", //
@@ -70,6 +76,7 @@ public class Edificio {
         this.idEdificio = createId();
         this.model = model;
         modelInstance = new ModelInstance(model, x, y, 0);
+        position=new Vector3(x,y,0);
 
         elencoEdifici.add(this);
         istanceEdifici.add(modelInstance);
@@ -106,5 +113,13 @@ public class Edificio {
 
     public City getCity() {
         return city;
+    }
+    public Vector3 getPosition() {
+        return position;
+    }
+    public static Edificio getEdificioById(int id){
+        for(Edificio e: elencoEdifici)
+            if( e.getIdEdificio()==id) return e;
+        return null;
     }
 }

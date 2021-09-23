@@ -2,6 +2,7 @@ package com.boymask.city.edifici;
 
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.boymask.city.City;
+import com.boymask.city.infrastructure.MerceDisponibile;
 import com.boymask.city.infrastructure.Order;
 import com.boymask.city.merci.Inventario;
 import com.boymask.city.merci.Merce;
@@ -55,6 +56,7 @@ public class EdificioProduzione extends Edificio {
                         sleep(1000 * nsecs);
                         decurtaMateriePrime();
                         incrementaMerciInUscita();
+                        aggiornaInventarioGlobale();
 
                         System.out.println(merciInUscita.toString());
 
@@ -67,6 +69,11 @@ public class EdificioProduzione extends Edificio {
         t.start();
 
 
+    }
+
+    private void aggiornaInventarioGlobale() {
+        MerceDisponibile md = new MerceDisponibile(getIdEdificio(), tipoMerceProdotte.getTipo());
+        getCity().getInventarioGlobale().addMerce(md);
     }
 
     private void creaOrdini() {

@@ -96,9 +96,9 @@ public class City extends ApplicationAdapter implements InputProcessor {
         modelInstance = new ModelInstance(box, 0, 0, 0);
         modelInstance2 = new ModelInstance(box, 3, 0, 0);
         //   MovingObject mo = new MovingObject(modelInstance);
-        MovingObject mo2 = new MovingObject(modelInstance2);
-
-
+        MovingObject mo2 = new MovingObject(this, modelInstance2);
+//mo2.setMovement(new Vector3(10,10,10));
+//mo2.moveTo(new Vector3(10,10,10));
         //  objs.add(mo);
         objs.add(mo2);
 
@@ -145,6 +145,12 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
 
         house.transform.scale(5f, 5, 5f);
+
+        ModelInstance mmm = new ModelInstance(box, 10, 20, 30);
+        Carrier r = new Carrier(this,mmm );
+        objs.add(r);
+        r.workCycle();
+     //   r.work();
     }
 
     private void showTree(String fileName, int x, int y) {
@@ -189,11 +195,11 @@ public class City extends ApplicationAdapter implements InputProcessor {
         camera.update();
         modelBatch.begin(camera);
 
-      /*  for (MovingObject i : objs) {
+       for (MovingObject i : objs) {
             modelBatch.render(i.getModelInstance(), environment);
             i.move();
         }
-        modelBatch.render(modelInstance, environment);*/
+        modelBatch.render(modelInstance, environment);
         modelBatch.render(house, environment);
      //   modelBatch.render(tree, environment);
 
@@ -266,7 +272,7 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
         ModelInstance m = new ModelInstance(mod, tmpVector.x, tmpVector.y, tmpVector.z);
 
-        MovingObject mo = new MovingObject(m);
+        MovingObject mo = new MovingObject(this, m);
 
         objs.add(mo);
         return mo;
