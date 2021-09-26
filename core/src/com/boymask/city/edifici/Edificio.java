@@ -77,10 +77,10 @@ public class Edificio {
         return CURRID;
     }
 
-    public Edificio(Model model, City city, int x, int y) {
+    public Edificio(TipoEdificio tipo, City city, int x, int y) {
         this.city = city;
         this.idEdificio = createId();
-        this.model = model;
+        this.model = AllEdifici.getModelloEdificio(tipo);
         modelInstance = new ModelInstance(model, x, y, 0);
         position = new Vector3(x, y, 0);
 
@@ -94,15 +94,14 @@ public class Edificio {
     private static void loadAllModels() {
 
         for (String f : filenames) {
-            System.out.println("Loading " + f);
             am.load(f, Model.class);
         }
         am.finishLoading();
-//        Model model = am.get(fileName, Model.class);
-//        return model;
 
-        modelFornaio = getModel("edifici/obj/house_type21.obj");
-        modelPozzo = getModel("edifici/obj/house_type20.obj");
+        AllEdifici.setModelloEdificio(TipoEdificio.FORNAIO, getModel("edifici/obj/house_type21.obj"));
+        AllEdifici.setModelloEdificio(TipoEdificio.POZZO, getModel("edifici/obj/house_type20.obj"));
+        AllEdifici.setModelloEdificio(TipoEdificio.CASTELLO, getModel("edifici/obj/house_type19.obj"));
+        AllEdifici.setModelloEdificio(TipoEdificio.DEPOSITO, getModel("edifici/obj/house_type18.obj"));
     }
 
     public static final List<ModelInstance> getIstanceEdifici() {

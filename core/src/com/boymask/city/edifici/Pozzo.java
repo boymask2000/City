@@ -6,7 +6,7 @@ import com.boymask.city.merci.Merce_Pane;
 
 public class Pozzo extends EdificioProduzione{
     public Pozzo(City city, int x, int y) { //
-        super(modelPozzo,  city,  new Merce_Acqua(),x, y);
+        super(TipoEdificio.POZZO,  city,  new Merce_Acqua(),x, y);
     }
 
 

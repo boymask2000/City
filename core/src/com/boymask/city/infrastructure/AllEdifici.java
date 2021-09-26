@@ -1,12 +1,16 @@
 package com.boymask.city.infrastructure;
 
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.math.Vector3;
 import com.boymask.city.edifici.Edificio;
+import com.boymask.city.edifici.TipoEdificio;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class AllEdifici {
+    private static Map<TipoEdificio, Model> modelliEdifici=new HashMap<>();
+
     private Map<Integer, Edificio> map = new HashMap<>();
 
     public void addEdificio(int idEdificio, Edificio edificio) {
@@ -32,5 +36,12 @@ public class AllEdifici {
     private int getDist(Edificio value, Vector3 v) {
 
         return (int) value.getPosition().dst(v);
+    }
+
+    public static void setModelloEdificio( TipoEdificio tipo, Model model ){
+        modelliEdifici.put( tipo, model );
+    }
+    public static Model getModelloEdificio( TipoEdificio tipo ){
+        return modelliEdifici.get( tipo);
     }
 }

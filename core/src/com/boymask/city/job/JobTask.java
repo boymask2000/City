@@ -15,7 +15,7 @@ public class JobTask {
 
     public void exec(MovingObject actor) {
         System.out.println("JobTask " + op);
-
+if(target==null)return;
         switch (op) {
             case VAI:
                 actor.setTarget(target.getPosition());

@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.boymask.city.edifici.TipoEdificio;
 
 public class UIManager {
 
@@ -69,6 +70,7 @@ public class UIManager {
         ImageButton up_arrow = buildImageButton("bottoni/up-arrow50.png");
         ImageButton right_arrow = buildImageButton("bottoni/right-arrow50.png");
         ImageButton hades = buildImageButton("bottoni/hades-symbol50.png");
+        TextButton pozzo = createTextButton("Pozzo");
 
         table.add(castle);
         table.add(mulino);
@@ -79,20 +81,20 @@ public class UIManager {
         table.add(up_arrow);
         table.add(right_arrow);
         table.row();
-      //  table.add(hades);
+        table.add(pozzo);
 
-      /*  hades.addListener(new EventListener() {
+
+        pozzo.addListener(new ChangeListener() {
             @Override
             public boolean handle(Event event) {
-                if (!(event instanceof InputEvent) ||
-                        !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
-                    return false;
-
-
-                city.setHades();
+                System.out.println("ccc");
+                city.setEdificioInCostruzione(TipoEdificio.POZZO);
                 return true;
             }
-        });*/
+
+            public void changed(ChangeEvent event, Actor actor) {
+            }
+        });
 
         castle.addListener(new EventListener() {
             @Override
@@ -106,7 +108,6 @@ public class UIManager {
                 return true;
             }
         });
-
 
 
         mulino.addListener(new EventListener() {
@@ -123,7 +124,6 @@ public class UIManager {
         });
 
 
-
         road.addListener(new EventListener() {
             @Override
             public boolean handle(Event event) {
@@ -135,8 +135,6 @@ public class UIManager {
                 return true;
             }
         });
-
-
 
 
         left_arrow.addListener(new EventListener() {
@@ -186,5 +184,17 @@ public class UIManager {
         TextureRegionDrawable draw = new TextureRegionDrawable(reg);
         ImageButton ib = new ImageButton(draw);
         return ib;
+    }
+
+    private TextButton createTextButton(String label) {
+        Skin mySkin = new Skin(Gdx.files.internal("skins/glassy/glassy-ui.json"));
+        TextButton button2 = new TextButton(label, mySkin, "small");
+
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = new BitmapFont();
+
+        textButtonStyle.fontColor = Color.WHITE;
+
+        return button2;
     }
 }

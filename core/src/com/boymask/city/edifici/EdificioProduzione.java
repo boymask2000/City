@@ -21,8 +21,8 @@ public class EdificioProduzione extends Edificio {
 
     private Merce tipoMerceProdotte = null;
 
-    public EdificioProduzione(Model model, City city, Merce tipoMerceProdotte, int x, int y) {
-        super(model, city, x, y);
+    public EdificioProduzione(TipoEdificio tipo, City city, Merce tipoMerceProdotte, int x, int y) {
+        super(tipo, city, x, y);
         this.tipoMerceProdotte = tipoMerceProdotte;
         merciInUscita = new VoceInventario(tipoMerceProdotte.getTipo());
     }

@@ -36,6 +36,8 @@ import com.badlogic.gdx.utils.UBJsonReader;
 import com.boymask.city.edifici.Edificio;
 import com.boymask.city.edifici.Fornaio;
 import com.boymask.city.edifici.Pozzo;
+import com.boymask.city.edifici.TipoEdificio;
+import com.boymask.city.infrastructure.AllEdifici;
 import com.boymask.city.infrastructure.InventarioGlobale;
 import com.boymask.city.infrastructure.OrderManager;
 import com.boymask.city.job.Job;
@@ -76,14 +78,13 @@ public class City extends ApplicationAdapter implements InputProcessor {
     private ModelInstance instance;
 
 
+    private TipoEdificio edificioInCostruzione = null;
+
+
     private OrderManager orderManager= new OrderManager();
-
-
+    private List<ModelInstance> act = new ArrayList<>();
 
     private InventarioGlobale inventarioGlobale = new InventarioGlobale();
-    private Pozzo p1;
-    private Pozzo p2;
-    private Pozzo p3;
 
     @Override
     public void create() {
@@ -142,9 +143,7 @@ public class City extends ApplicationAdapter implements InputProcessor {
         Pozzo p = new Pozzo(this,10,20);
         p.produci();
 
-        p1 = new Pozzo(this,10,20);
-        p2 = new Pozzo(this,15,25);
-        p3 = new Pozzo(this,20,30);
+
         house.transform.scale(5f, 5, 5f);
 
         ModelInstance mmm = new ModelInstance(box, 10, 20, 30);
@@ -158,10 +157,10 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
     private void provaJob(MovingObject mo){
         TaskOperation op1=TaskOperation.VAI;
-        JobTask jt1 = new JobTask(op1, p1);
+        JobTask jt1 = new JobTask(op1, null);
 
         TaskOperation op2=TaskOperation.VAI;
-        JobTask jt2 = new JobTask(op1, p2);
+        JobTask jt2 = new JobTask(op1, null);
 
         List<JobTask> tasks=new ArrayList<>();
         tasks.add(jt1);
@@ -199,8 +198,6 @@ public class City extends ApplicationAdapter implements InputProcessor {
         Model model = loadModel(fileName);
         return new ModelInstance(model, x, y, z);
     }
-
-    List<ModelInstance> act = new ArrayList<>();
 
 
     @Override
@@ -327,6 +324,11 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
+        if( edificioInCostruzione !=null){
+            Model mod = AllEdifici.getModelloEdificio(edificioInCostruzione);
+            addActor(mod, x,  y);
+            edificioInCostruzione=null;
+        }
         if (reteStradale.isRoadBuilding()) {
             addActor(reteStradale.getStreetElementModel(), x, y);
             return true;
@@ -342,7 +344,7 @@ public class City extends ApplicationAdapter implements InputProcessor {
             System.out.println(curr.size());
             return true;
         }
-        addActor(box, x, y);
+   //     addActor(box, x, y);
 
         return true;
     }
@@ -366,4 +368,8 @@ public class City extends ApplicationAdapter implements InputProcessor {
     public InventarioGlobale getInventarioGlobale() {
         return inventarioGlobale;
     }
+    public void setEdificioInCostruzione(TipoEdificio edificioInCostruzione) {
+        this.edificioInCostruzione = edificioInCostruzione;
+    }
+
 }
