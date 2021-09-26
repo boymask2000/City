@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.boymask.city.City;
+import com.boymask.city.infrastructure.AllEdifici;
+import com.boymask.city.merci.Inventario;
+import com.boymask.city.merci.TipoMerce;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +24,10 @@ public class Edificio {
     private final Vector3 position;
 
     private int idEdificio;
-    private Map<Integer, Edificio> estates = new HashMap<>();
+
+
+
+    public static AllEdifici allEdifici=new AllEdifici();
 
 
     private final static List<Edificio> elencoEdifici = new ArrayList<>();
@@ -36,7 +42,7 @@ public class Edificio {
     public static Model modelFornaio;
     public static Model modelPozzo;
 
-
+    protected Inventario inventario = new Inventario();
 
     private static final String[] filenames = {
             "edifici/obj/house_type01.obj", //
@@ -72,16 +78,17 @@ public class Edificio {
     }
 
     public Edificio(Model model, City city, int x, int y) {
-        this.city=city;
+        this.city = city;
         this.idEdificio = createId();
         this.model = model;
         modelInstance = new ModelInstance(model, x, y, 0);
-        position=new Vector3(x,y,0);
+        position = new Vector3(x, y, 0);
 
         elencoEdifici.add(this);
         istanceEdifici.add(modelInstance);
 
-        estates.put(getIdEdificio(), this);
+
+        allEdifici.addEdificio(getIdEdificio(), this);
     }
 
     private static void loadAllModels() {
@@ -106,7 +113,6 @@ public class Edificio {
         return am.get(fileName, Model.class);
     }
 
-
     public int getIdEdificio() {
         return idEdificio;
     }
@@ -114,12 +120,25 @@ public class Edificio {
     public City getCity() {
         return city;
     }
+
     public Vector3 getPosition() {
         return position;
     }
-    public static Edificio getEdificioById(int id){
-        for(Edificio e: elencoEdifici)
-            if( e.getIdEdificio()==id) return e;
+
+    public static Edificio getEdificioById(int id) {
+        for (Edificio e : elencoEdifici)
+            if (e.getIdEdificio() == id) return e;
         return null;
+    }
+
+    public void addinInventario(TipoMerce t) {
+        inventario.addMerce(t, 1);
+    }
+
+    public boolean getFromInventario(TipoMerce t) {
+        return inventario.getMerce(t);
+    }
+    public static AllEdifici getAllEdifici() {
+        return allEdifici;
     }
 }

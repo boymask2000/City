@@ -7,6 +7,9 @@ import com.boymask.city.infrastructure.MerceDisponibile;
 import com.boymask.city.merci.TipoMerce;
 
 public class Carrier extends MovingObject {
+
+
+    private TipoMerce carico=null;
     private final InventarioGlobale inventarioGlobale;
 
     public Carrier(City city, ModelInstance modelInstance) {
@@ -44,13 +47,23 @@ public class Carrier extends MovingObject {
         System.out.println(" trovato !");
         Edificio srcEdificio = Edificio.getEdificioById(m.getIdEdificio());
         Edificio trgEdificio = searchEdificioTarget(m.getTipoMerce());
-        moveTo(srcEdificio.getPosition());
+        setTarget(srcEdificio.getPosition());
 
         working = true;
         return;
     }
+    public TipoMerce getCarico() {
+        return carico;
+    }
+
+    public void setCarico(TipoMerce carico) {
+        this.carico = carico;
+    }
+
 
     private Edificio searchEdificioTarget(TipoMerce tipoMerce) {
         return null;
     }
+
+
 }

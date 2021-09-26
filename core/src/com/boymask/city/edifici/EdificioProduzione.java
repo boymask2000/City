@@ -15,7 +15,7 @@ import java.util.List;
 public class EdificioProduzione extends Edificio {
     private int maxInventario = 5;
 
-    private Inventario inventario = new Inventario();
+
     private Inventario ordiniFatti = new Inventario();
     private VoceInventario merciInUscita;
 
@@ -27,7 +27,7 @@ public class EdificioProduzione extends Edificio {
         merciInUscita = new VoceInventario(tipoMerceProdotte.getTipo());
     }
 
-    Thread t;
+    private Thread t;
 
     public void produci() {
         t = new Thread() {
@@ -143,9 +143,5 @@ public class EdificioProduzione extends Edificio {
             if (!inventario.in(v)) return false;
         }
         return true;
-    }
-
-    public void addinInventario(TipoMerce t) {
-        inventario.addMerce(t, 1);
     }
 }

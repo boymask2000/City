@@ -38,6 +38,9 @@ import com.boymask.city.edifici.Fornaio;
 import com.boymask.city.edifici.Pozzo;
 import com.boymask.city.infrastructure.InventarioGlobale;
 import com.boymask.city.infrastructure.OrderManager;
+import com.boymask.city.job.Job;
+import com.boymask.city.job.JobTask;
+import com.boymask.city.job.TaskOperation;
 import com.boymask.city.merci.TipoMerce;
 import com.boymask.city.street.ReteStradale;
 import com.boymask.city.street.StreetBlock;
@@ -78,6 +81,9 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
 
     private InventarioGlobale inventarioGlobale = new InventarioGlobale();
+    private Pozzo p1;
+    private Pozzo p2;
+    private Pozzo p3;
 
     @Override
     public void create() {
@@ -95,12 +101,12 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
         modelInstance = new ModelInstance(box, 0, 0, 0);
         modelInstance2 = new ModelInstance(box, 3, 0, 0);
-        //   MovingObject mo = new MovingObject(modelInstance);
-        MovingObject mo2 = new MovingObject(this, modelInstance2);
+           MovingObject mo = new MovingObject(this,modelInstance);
+    //    MovingObject mo2 = new MovingObject(this, modelInstance2);
 //mo2.setMovement(new Vector3(10,10,10));
 //mo2.moveTo(new Vector3(10,10,10));
-        //  objs.add(mo);
-        objs.add(mo2);
+          objs.add(mo);
+      //  objs.add(mo2);
 
         //mo.moveTo(new Vector3(5, 5, 3));
 
@@ -110,14 +116,9 @@ public class City extends ApplicationAdapter implements InputProcessor {
         environment.add(new DirectionalLight().set(0.9f, 0.9f, 0.9f, 20f, 20f, 20f));
         float intensity = 100f;
 
-        //     environment.add(new PointLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.8f, intensity));
-
 
         multiplexer.addProcessor(this);
 
-
-       /* CameraInputController camController = new CameraInputController(cameraPosition.getCamera());
-        multiplexer.addProcessor(camController);*/
 
 
         Gdx.input.setInputProcessor(multiplexer);
@@ -127,8 +128,7 @@ public class City extends ApplicationAdapter implements InputProcessor {
         UBJsonReader jsonReader = new UBJsonReader();
         G3dModelLoader loader = new G3dModelLoader(jsonReader);
 
-/*for(int i=10; i<22; i++)
-        showTree("edifici/obj/house_type"+i+".obj", (i-15)*7,0);*/
+
         showTree("edifici/obj/house_type01.obj", 0,5);
 
         house = loadModelInstance("edifici/house_type06.g3dj", 5, 5, 0);
@@ -142,8 +142,9 @@ public class City extends ApplicationAdapter implements InputProcessor {
         Pozzo p = new Pozzo(this,10,20);
         p.produci();
 
-
-
+        p1 = new Pozzo(this,10,20);
+        p2 = new Pozzo(this,15,25);
+        p3 = new Pozzo(this,20,30);
         house.transform.scale(5f, 5, 5f);
 
         ModelInstance mmm = new ModelInstance(box, 10, 20, 30);
@@ -151,6 +152,26 @@ public class City extends ApplicationAdapter implements InputProcessor {
         objs.add(r);
         r.workCycle();
      //   r.work();
+
+        provaJob(mo);
+    }
+
+    private void provaJob(MovingObject mo){
+        TaskOperation op1=TaskOperation.VAI;
+        JobTask jt1 = new JobTask(op1, p1);
+
+        TaskOperation op2=TaskOperation.VAI;
+        JobTask jt2 = new JobTask(op1, p2);
+
+        List<JobTask> tasks=new ArrayList<>();
+        tasks.add(jt1);
+        tasks.add(jt2);
+
+        Job job = new Job(mo, tasks, true);
+
+        mo.setJob(job);
+
+
     }
 
     private void showTree(String fileName, int x, int y) {
