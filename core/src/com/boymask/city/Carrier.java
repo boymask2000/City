@@ -2,9 +2,17 @@ package com.boymask.city;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.boymask.city.edifici.Edificio;
+import com.boymask.city.infrastructure.AllEdifici;
 import com.boymask.city.infrastructure.InventarioGlobale;
 import com.boymask.city.infrastructure.MerceDisponibile;
+import com.boymask.city.infrastructure.Order;
+import com.boymask.city.job.Job;
+import com.boymask.city.job.JobTask;
+import com.boymask.city.job.TaskOperation;
 import com.boymask.city.merci.TipoMerce;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Carrier extends MovingObject {
 
@@ -47,10 +55,27 @@ public class Carrier extends MovingObject {
         System.out.println(" trovato !");
         Edificio srcEdificio = Edificio.getEdificioById(m.getIdEdificio());
         Edificio trgEdificio = searchEdificioTarget(m.getTipoMerce());
-        setTarget(srcEdificio.getPosition());
-
+        //setTarget(srcEdificio.getPosition());
+        createJob(srcEdificio,trgEdificio);
         working = true;
         return;
+    }
+    private void createJob( Edificio srcEdificio,  Edificio trgEdificio ){
+        TaskOperation op1=TaskOperation.VAI;
+        JobTask jt1 = new JobTask(op1, srcEdificio);
+
+        TaskOperation op2=TaskOperation.VAI;
+        JobTask jt2 = new JobTask(op1, trgEdificio);
+
+        List<JobTask> tasks=new ArrayList<>();
+        tasks.add(jt1);
+        tasks.add(jt2);
+
+        Job job = new Job(this, tasks, true);
+
+        setJob(job);
+
+
     }
     public TipoMerce getCarico() {
         return carico;
@@ -62,6 +87,11 @@ public class Carrier extends MovingObject {
 
 
     private Edificio searchEdificioTarget(TipoMerce tipoMerce) {
+        Order ord = getCity().getOrderManager().getNextOrder(tipoMerce);
+        if(ord!=null){
+            Edificio ed= Edificio.getEdificioById(ord.getIdEdificio());
+            return ed;
+        }
         return null;
     }
 

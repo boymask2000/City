@@ -8,6 +8,8 @@ import com.boymask.city.edifici.Edificio;
 import com.boymask.city.job.Job;
 
 public class MovingObject {
+
+
     private final City city;
     private ModelInstance modelInstance;
     private Vector3 movement;
@@ -136,5 +138,7 @@ return movement;
     public void setTarget(Vector3 target) {
         this.target = target;
     }
-
+    public City getCity() {
+        return city;
+    }
 }

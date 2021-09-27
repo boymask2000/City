@@ -1,5 +1,7 @@
 package com.boymask.city.infrastructure;
 
+import com.boymask.city.merci.TipoMerce;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,14 @@ public class OrderManager {
         ordini.remove(0);
         return ord;
     }
-
+    public synchronized Order getNextOrder(TipoMerce tm) {
+        if (ordini.size() == 0) return null;
+        for( Order ord: ordini)
+            if( ord.getTipoMerce()==tm) {
+                ordini.remove(ord);
+                return ord;
+            }
+        return null;
+    }
 
 }
