@@ -15,7 +15,7 @@ public class MovingObject {
     private Vector3 movement;
     private Vector3 position;
 
-    private static final float DELTA = 0.01f;
+    private static final float DELTA = 0.03f;
 
 
     private Vector3 target;

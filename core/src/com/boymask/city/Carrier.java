@@ -56,20 +56,28 @@ public class Carrier extends MovingObject {
         Edificio srcEdificio = Edificio.getEdificioById(m.getIdEdificio());
         Edificio trgEdificio = searchEdificioTarget(m.getTipoMerce());
         //setTarget(srcEdificio.getPosition());
-        createJob(srcEdificio,trgEdificio);
+        createJob(srcEdificio,trgEdificio,m);
         working = true;
         return;
     }
-    private void createJob( Edificio srcEdificio,  Edificio trgEdificio ){
+    private void createJob( Edificio srcEdificio,  Edificio trgEdificio ,MerceDisponibile m){
         TaskOperation op1=TaskOperation.VAI;
-        JobTask jt1 = new JobTask(op1, srcEdificio);
+        JobTask jt1 = new JobTask(op1, srcEdificio,null);
 
-        TaskOperation op2=TaskOperation.VAI;
-        JobTask jt2 = new JobTask(op1, trgEdificio);
+        TaskOperation op2=TaskOperation.CARICA;
+        JobTask jt2 = new JobTask(op2, srcEdificio,m.getTipoMerce());
+
+        TaskOperation op3=TaskOperation.VAI;
+        JobTask jt3 = new JobTask(op3, trgEdificio,null);
+
+        TaskOperation op4=TaskOperation.SCARICA;
+        JobTask jt4 = new JobTask(op4, srcEdificio,m.getTipoMerce());
 
         List<JobTask> tasks=new ArrayList<>();
         tasks.add(jt1);
         tasks.add(jt2);
+        tasks.add(jt3);
+        tasks.add(jt4);
 
         Job job = new Job(this, tasks, true);
 

@@ -22,9 +22,16 @@ public class Inventario {
 
     }
 
-    public boolean getMerce( TipoMerce t){
+    public void dump() {
+
         for (VoceInventario m : merci)
-            if (m.getTipo() == t && m.getGiacenza()>0) {
+            System.out.println(m.toString());
+    }
+
+
+    public boolean getMerce(TipoMerce t) {
+        for (VoceInventario m : merci)
+            if (m.getTipo() == t && m.getGiacenza() > 0) {
                 m.setGiacenza(m.getGiacenza() - 1);
                 return true;
             }

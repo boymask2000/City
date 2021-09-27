@@ -157,10 +157,10 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
     private void provaJob(MovingObject mo){
         TaskOperation op1=TaskOperation.VAI;
-        JobTask jt1 = new JobTask(op1, null);
+        JobTask jt1 = new JobTask(op1, null,null);
 
         TaskOperation op2=TaskOperation.VAI;
-        JobTask jt2 = new JobTask(op1, null);
+        JobTask jt2 = new JobTask(op1, null,null);
 
         List<JobTask> tasks=new ArrayList<>();
         tasks.add(jt1);

@@ -22,8 +22,10 @@ public class Edificio {
 
 
     private final Vector3 position;
+    private final TipoEdificio tipoEdificio;
 
     private int idEdificio;
+
 
 
     public static AllEdifici allEdifici = new AllEdifici();
@@ -77,6 +79,7 @@ public class Edificio {
     }
 
     public Edificio(TipoEdificio tipo, City city, int x, int y) {
+        this.tipoEdificio=tipo;
         this.city = city;
         this.idEdificio = createId();
         this.model = AllEdifici.getModelloEdificio(tipo);
@@ -133,14 +136,27 @@ public class Edificio {
     }
 
     public void addinInventario(TipoMerce t) {
+
         inventario.addMerce(t, 1);
+        inventario.dump();
     }
 
     public boolean getFromInventario(TipoMerce t) {
-        return inventario.getMerce(t);
+
+        boolean b = inventario.getMerce(t);
+        inventario.dump();
+        return b;
     }
 
     public static AllEdifici getAllEdifici() {
         return allEdifici;
+    }
+
+    @Override
+    public String toString() {
+        return "Edificio{" +
+                "tipoEdificio=" + tipoEdificio +
+                ", idEdificio=" + idEdificio +
+                '}';
     }
 }
