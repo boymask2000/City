@@ -4,5 +4,7 @@ public enum TipoEdificio {
     DEPOSITO, //
     CASTELLO, //
     POZZO, //
-    FORNAIO
+    FORNAIO, //
+    MULINO, //
+    CAMPO_GRANO ;
 }

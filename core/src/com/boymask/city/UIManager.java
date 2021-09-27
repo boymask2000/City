@@ -64,26 +64,63 @@ public class UIManager {
 
 
         ImageButton castle = buildImageButton("bottoni/castle100.png");
-        ImageButton mulino = buildImageButton("bottoni/windmill80.png");
+        ImageButton mulino0 = buildImageButton("bottoni/windmill80.png");
         ImageButton road = buildImageButton("bottoni/horizon-road80.png");
         ImageButton left_arrow = buildImageButton("bottoni/left-arrow50.png");
         ImageButton up_arrow = buildImageButton("bottoni/up-arrow50.png");
         ImageButton right_arrow = buildImageButton("bottoni/right-arrow50.png");
         ImageButton hades = buildImageButton("bottoni/hades-symbol50.png");
         TextButton pozzo = createTextButton("Pozzo");
+        TextButton castello = createTextButton("Castello");
+        TextButton fornaio = createTextButton("Fornaio");
+        TextButton mulino = createTextButton("Mulino");
+        TextButton campo_grano = createTextButton("Campo di Grano");
+        TextButton deposito = createTextButton("Deposito");
 
         table.add(castle);
-        table.add(mulino);
+
         table.row();
-        table.add(road);
-        table.row();
+
         table.add(left_arrow);
         table.add(up_arrow);
         table.add(right_arrow);
         table.row();
-        table.add(pozzo);
+        table.add(pozzo); table.row();
+        table.add(fornaio); table.row();
+        table.add(mulino); table.row();
+        table.add(campo_grano); table.row();
+        table.add(deposito); table.row();
 
-
+        campo_grano.addListener(new ChangeListener() {
+            @Override
+            public boolean handle(Event event) {
+                System.out.println("ccc");
+                city.setEdificioInCostruzione(TipoEdificio.CAMPO_GRANO);
+                return true;
+            }
+            public void changed(ChangeEvent event, Actor actor) {
+            }
+        });
+        mulino.addListener(new ChangeListener() {
+            @Override
+            public boolean handle(Event event) {
+                System.out.println("ccc");
+                city.setEdificioInCostruzione(TipoEdificio.MULINO);
+                return true;
+            }
+            public void changed(ChangeEvent event, Actor actor) {
+            }
+        });
+        fornaio.addListener(new ChangeListener() {
+            @Override
+            public boolean handle(Event event) {
+                System.out.println("ccc");
+                city.setEdificioInCostruzione(TipoEdificio.FORNAIO);
+                return true;
+            }
+            public void changed(ChangeEvent event, Actor actor) {
+            }
+        });
         pozzo.addListener(new ChangeListener() {
             @Override
             public boolean handle(Event event) {
@@ -91,7 +128,6 @@ public class UIManager {
                 city.setEdificioInCostruzione(TipoEdificio.POZZO);
                 return true;
             }
-
             public void changed(ChangeEvent event, Actor actor) {
             }
         });
@@ -102,7 +138,6 @@ public class UIManager {
                 if (!(event instanceof InputEvent) ||
                         !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
                     return false;
-
 
                 System.out.println("jjjj");
                 return true;

@@ -26,8 +26,7 @@ public class Edificio {
     private int idEdificio;
 
 
-
-    public static AllEdifici allEdifici=new AllEdifici();
+    public static AllEdifici allEdifici = new AllEdifici();
 
 
     private final static List<Edificio> elencoEdifici = new ArrayList<>();
@@ -102,6 +101,9 @@ public class Edificio {
         AllEdifici.setModelloEdificio(TipoEdificio.POZZO, getModel("edifici/obj/house_type20.obj"));
         AllEdifici.setModelloEdificio(TipoEdificio.CASTELLO, getModel("edifici/obj/house_type19.obj"));
         AllEdifici.setModelloEdificio(TipoEdificio.DEPOSITO, getModel("edifici/obj/house_type18.obj"));
+        AllEdifici.setModelloEdificio(TipoEdificio.MULINO, getModel("edifici/obj/house_type17.obj"));
+        AllEdifici.setModelloEdificio(TipoEdificio.CAMPO_GRANO, getModel("edifici/obj/house_type16.obj"));
+        AllEdifici.setModelloEdificio(TipoEdificio.DEPOSITO, getModel("edifici/obj/house_type18.obj"));
     }
 
     public static final List<ModelInstance> getIstanceEdifici() {
@@ -137,6 +139,7 @@ public class Edificio {
     public boolean getFromInventario(TipoMerce t) {
         return inventario.getMerce(t);
     }
+
     public static AllEdifici getAllEdifici() {
         return allEdifici;
     }

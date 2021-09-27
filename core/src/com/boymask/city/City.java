@@ -291,7 +291,7 @@ public class City extends ApplicationAdapter implements InputProcessor {
         ModelInstance m = new ModelInstance(mod, tmpVector.x, tmpVector.y, tmpVector.z);
 
         MovingObject mo = new MovingObject(this, m);
-
+        m.transform.scale(5f, 5, 5f);
         objs.add(mo);
         return mo;
     }
