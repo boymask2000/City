@@ -29,6 +29,7 @@ public class EdificioProduzione extends Edificio {
 
     private Thread t;
 
+    @Override
     public void produci() {
         t = new Thread() {
             public void run() {

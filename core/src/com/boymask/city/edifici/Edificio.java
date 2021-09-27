@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Edificio {
+public abstract class Edificio {
     private static int CURRID = 0;
 
     private final City city;
@@ -25,7 +25,6 @@ public class Edificio {
     private final TipoEdificio tipoEdificio;
 
     private int idEdificio;
-
 
 
     public static AllEdifici allEdifici = new AllEdifici();
@@ -73,13 +72,17 @@ public class Edificio {
         loadAllModels();
     }
 
+    //***************************************************************************************************
+    public abstract void produci();
+    //***************************************************************************************************
+
     private synchronized int createId() {
         CURRID++;
         return CURRID;
     }
 
     public Edificio(TipoEdificio tipo, City city, int x, int y) {
-        this.tipoEdificio=tipo;
+        this.tipoEdificio = tipo;
         this.city = city;
         this.idEdificio = createId();
         this.model = AllEdifici.getModelloEdificio(tipo);
@@ -93,6 +96,43 @@ public class Edificio {
         allEdifici.addEdificio(getIdEdificio(), this);
     }
 
+
+    public int getIdEdificio() {
+        return idEdificio;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public Vector3 getPosition() {
+        return position;
+    }
+
+
+    public void addinInventario(TipoMerce t) {
+
+        inventario.addMerce(t, 1);
+        inventario.dump();
+    }
+
+    public boolean getFromInventario(TipoMerce t) {
+
+        boolean b = inventario.getMerce(t);
+        inventario.dump();
+        return b;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Edificio{" +
+                "tipoEdificio=" + tipoEdificio +
+                ", idEdificio=" + idEdificio +
+                '}';
+    }
+
+    //***********  STATICS  ***************************************************
     private static void loadAllModels() {
 
         for (String f : filenames) {
@@ -109,24 +149,9 @@ public class Edificio {
         AllEdifici.setModelloEdificio(TipoEdificio.DEPOSITO, getModel("edifici/obj/house_type18.obj"));
     }
 
-    public static final List<ModelInstance> getIstanceEdifici() {
-        return istanceEdifici;
-    }
 
-    public static Model getModel(String fileName) {
-        return am.get(fileName, Model.class);
-    }
-
-    public int getIdEdificio() {
-        return idEdificio;
-    }
-
-    public City getCity() {
-        return city;
-    }
-
-    public Vector3 getPosition() {
-        return position;
+    public static AllEdifici getAllEdifici() {
+        return allEdifici;
     }
 
     public static Edificio getEdificioById(int id) {
@@ -135,28 +160,36 @@ public class Edificio {
         return null;
     }
 
-    public void addinInventario(TipoMerce t) {
-
-        inventario.addMerce(t, 1);
-        inventario.dump();
+    public static final List<ModelInstance> getIstanceEdifici() {
+        return istanceEdifici;
     }
 
-    public boolean getFromInventario(TipoMerce t) {
-
-        boolean b = inventario.getMerce(t);
-        inventario.dump();
-        return b;
+    public static Model getModel(String fileName) {
+        return am.get(fileName, Model.class);
     }
 
-    public static AllEdifici getAllEdifici() {
-        return allEdifici;
-    }
-
-    @Override
-    public String toString() {
-        return "Edificio{" +
-                "tipoEdificio=" + tipoEdificio +
-                ", idEdificio=" + idEdificio +
-                '}';
+    public static Edificio createEdificio(TipoEdificio tipo,City city, int x, int y) {
+        Edificio ed = null;
+        switch (tipo) {
+            case POZZO:
+                ed = new Pozzo(city,x,y);
+                break;
+            case MULINO:
+                ed = new Mulino(city,x,y);
+                break;
+            case FORNAIO:
+                ed = new Fornaio(city,x,y);
+                break;
+            case CAMPO_GRANO:
+                ed = new CampoDiGrano(city,x,y);
+                break;
+            case CASTELLO:
+                ed = new Castello(city,x,y);
+                break;
+            case DEPOSITO:
+              //  ed = new Deposito(city,x,y);
+                break;
+        }
+        return ed;
     }
 }

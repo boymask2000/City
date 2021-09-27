@@ -81,7 +81,7 @@ public class City extends ApplicationAdapter implements InputProcessor {
     private TipoEdificio edificioInCostruzione = null;
 
 
-    private OrderManager orderManager= new OrderManager();
+    private OrderManager orderManager = new OrderManager();
     private List<ModelInstance> act = new ArrayList<>();
 
     private InventarioGlobale inventarioGlobale = new InventarioGlobale();
@@ -102,24 +102,21 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
         modelInstance = new ModelInstance(box, 0, 0, 0);
         modelInstance2 = new ModelInstance(box, 3, 0, 0);
-           MovingObject mo = new MovingObject(this,modelInstance);
-    //    MovingObject mo2 = new MovingObject(this, modelInstance2);
+        //       MovingObject mo = new MovingObject(this,modelInstance);
+        //    MovingObject mo2 = new MovingObject(this, modelInstance2);
 //mo2.setMovement(new Vector3(10,10,10));
 //mo2.moveTo(new Vector3(10,10,10));
-          objs.add(mo);
-      //  objs.add(mo2);
+        //    objs.add(mo);
+        //  objs.add(mo2);
 
         //mo.moveTo(new Vector3(5, 5, 3));
+        environment = createEnvironment();
 
-        environment = new Environment();
-        //  environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 0.8f, 0.8f, 1f));
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        environment.add(new DirectionalLight().set(0.9f, 0.9f, 0.9f, 20f, 20f, 20f));
+
         float intensity = 100f;
 
 
         multiplexer.addProcessor(this);
-
 
 
         Gdx.input.setInputProcessor(multiplexer);
@@ -130,52 +127,45 @@ public class City extends ApplicationAdapter implements InputProcessor {
         G3dModelLoader loader = new G3dModelLoader(jsonReader);
 
 
-        showTree("edifici/obj/house_type01.obj", 0,5);
+        showTree("edifici/obj/house_type01.obj", 0, 5);
 
-        house = loadModelInstance("edifici/house_type06.g3dj", 5, 5, 0);
+   //     house = loadModelInstance("edifici/house_type06.g3dj", 5, 5, 0);
 
-       // new Edificio(loadModel(fileName), 0, 0);
-        Fornaio f = new Fornaio(this,10,10);
-        /*for(int i=0; i<7; i++){
-        f.addinInventario(TipoMerce.ACQUA);
-        f.addinInventario(TipoMerce.FARINA);}*/
-       f.produci();
-        Pozzo p = new Pozzo(this,10,20);
+
+
+        Fornaio f = new Fornaio(this, 10, 10);
+
+        f.produci();
+        Pozzo p = new Pozzo(this, 10, 20);
         p.produci();
 
 
-        house.transform.scale(5f, 5, 5f);
+     //   house.transform.scale(5f, 5, 5f);
 
         ModelInstance mmm = new ModelInstance(box, 10, 20, 30);
-        Carrier r = new Carrier(this,mmm );
+        Carrier r = new Carrier(this, mmm);
         objs.add(r);
         r.workCycle();
-     //   r.work();
 
-        provaJob(mo);
     }
 
-    private void provaJob(MovingObject mo){
-        TaskOperation op1=TaskOperation.VAI;
-        JobTask jt1 = new JobTask(op1, null,null);
+    private Environment createEnvironment() {
+        environment = new Environment();
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 0.8f, 0.8f, 1f));
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+        //  environment.add(new DirectionalLight().set(0.9f, 0.9f, 0.9f, 20f, 20f, 20f));
 
-        TaskOperation op2=TaskOperation.VAI;
-        JobTask jt2 = new JobTask(op1, null,null);
-
-        List<JobTask> tasks=new ArrayList<>();
-        tasks.add(jt1);
-        tasks.add(jt2);
-
-        Job job = new Job(mo, tasks, true);
-
-        mo.setJob(job);
-
-
+        DirectionalLight dLight = new DirectionalLight();
+        Color lightColor = new Color(0.75f, 0.75f, 0.75f, 1);
+        Vector3 lightVector = new Vector3(-1.0f, -0.75f, -0.25f);
+        dLight.set(lightColor, lightVector);
+        environment.add(dLight);
+        return environment;
     }
 
     private void showTree(String fileName, int x, int y) {
         //FileHandle stream = Gdx.files.getFileHandle("edifici/tree_large.obj", Files.FileType.Internal);
-            FileHandle stream = Gdx.files.getFileHandle(fileName, Files.FileType.Internal);
+        FileHandle stream = Gdx.files.getFileHandle(fileName, Files.FileType.Internal);
         ObjLoader d = new ObjLoader();
         Model treeModel = d.loadModel(stream, true);
 
@@ -213,13 +203,11 @@ public class City extends ApplicationAdapter implements InputProcessor {
         camera.update();
         modelBatch.begin(camera);
 
-       for (MovingObject i : objs) {
+        for (MovingObject i : objs) {
             modelBatch.render(i.getModelInstance(), environment);
             i.move();
         }
-        modelBatch.render(modelInstance, environment);
-        modelBatch.render(house, environment);
-     //   modelBatch.render(tree, environment);
+
 
         modelBatch.render(act);
 
@@ -324,27 +312,20 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
-        if( edificioInCostruzione !=null){
+        if (edificioInCostruzione != null) {
             Model mod = AllEdifici.getModelloEdificio(edificioInCostruzione);
-            addActor(mod, x,  y);
-            edificioInCostruzione=null;
+            addActor(mod, x, y);
+
+
+           Edificio ed =  Edificio.createEdificio(edificioInCostruzione, this,x,y);
+           ed.produci();
+
+            edificioInCostruzione = null;
         }
         if (reteStradale.isRoadBuilding()) {
             addActor(reteStradale.getStreetElementModel(), x, y);
             return true;
         }
-        System.out.println(hades);
-        if (hades) {
-            StreetBlock start = reteStradale.addElement(0, 0);
-            StreetBlock b = reteStradale.addElement(x, y);
-            List<StreetBlock> good = new ArrayList<>();
-            List<StreetBlock> curr = new ArrayList<>();
-            reteStradale.walk(good, curr, start, b);
-            System.out.println(good.size());
-            System.out.println(curr.size());
-            return true;
-        }
-   //     addActor(box, x, y);
 
         return true;
     }
@@ -365,9 +346,11 @@ public class City extends ApplicationAdapter implements InputProcessor {
     public OrderManager getOrderManager() {
         return orderManager;
     }
+
     public InventarioGlobale getInventarioGlobale() {
         return inventarioGlobale;
     }
+
     public void setEdificioInCostruzione(TipoEdificio edificioInCostruzione) {
         this.edificioInCostruzione = edificioInCostruzione;
     }

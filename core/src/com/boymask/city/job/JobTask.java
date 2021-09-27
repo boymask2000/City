@@ -21,7 +21,7 @@ public class JobTask {
         switch (op) {
             case VAI:
                 actor.setTarget(target.getPosition());
-                System.out.println(actor.getPosition() + " -> " + target.getPosition());
+
                 actor.moveTo();
                 break;
             case CARICA:
