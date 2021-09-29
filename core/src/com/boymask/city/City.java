@@ -322,10 +322,10 @@ public class City extends ApplicationAdapter implements InputProcessor {
         if (edificioInCostruzione != null) {
             System.out.println("Creazione edificio "+edificioInCostruzione);
             Model mod = AllEdifici.getModelloEdificio(edificioInCostruzione);
-            addActor(mod, x, y);
+            MovingObject mo = addActor(mod, x, y);
 
-
-           Edificio ed =  Edificio.createEdificio(edificioInCostruzione, this,x,y);
+            Edificio ed =  Edificio.createEdificio(edificioInCostruzione, this,(int)mo.getPosition().x,(int) mo.getPosition().y);
+       //    Edificio ed =  Edificio.createEdificio(edificioInCostruzione, this,x,y);
            ed.produci();
 
             edificioInCostruzione = null;
@@ -359,9 +359,10 @@ public class City extends ApplicationAdapter implements InputProcessor {
         return inventarioGlobale;
     }
 
-    public void setEdificioInCostruzione(TipoEdificio edificioInCostruzione) {
-        this.edificioInCostruzione = edificioInCostruzione;
-        System.out.println("Set EDIFiCIO "+edificioInCostruzione);
+    public void setEdificioInCostruzione(TipoEdificio ed) {
+        if( this.edificioInCostruzione!=null)return;
+        this.edificioInCostruzione = ed;
+        System.out.println("Set EDIFiCIO "+ed);
     }
 
 }

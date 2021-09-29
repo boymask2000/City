@@ -64,7 +64,7 @@ public class UIManager {
 
 
         ImageButton castle = buildImageButton("bottoni/castle100.png");
-        ImageButton mulino0 = buildImageButton("bottoni/windmill80.png");
+   //     ImageButton mulino0 = buildImageButton("bottoni/windmill80.png");
         ImageButton road = buildImageButton("bottoni/horizon-road80.png");
         ImageButton left_arrow = buildImageButton("bottoni/left-arrow50.png");
         ImageButton up_arrow = buildImageButton("bottoni/up-arrow50.png");
@@ -91,46 +91,13 @@ public class UIManager {
         table.add(campo_grano); table.row();
         table.add(deposito); table.row();
 
-        campo_grano.addListener(new ChangeListener() {
-            @Override
-            public boolean handle(Event event) {
+        setButtonListener(campo_grano,TipoEdificio.CAMPO_GRANO);
+        setButtonListener(mulino,TipoEdificio.MULINO);
+        setButtonListener(fornaio,TipoEdificio.FORNAIO);
+        setButtonListener(pozzo,TipoEdificio.POZZO);
 
-                city.setEdificioInCostruzione(TipoEdificio.CAMPO_GRANO);
-                return true;
-            }
-            public void changed(ChangeEvent event, Actor actor) {
-            }
-        });
-        mulino.addListener(new ChangeListener() {
-            @Override
-            public boolean handle(Event event) {
 
-                city.setEdificioInCostruzione(TipoEdificio.MULINO);
-                return true;
-            }
-            public void changed(ChangeEvent event, Actor actor) {
-            }
-        });
-        fornaio.addListener(new ChangeListener() {
-            @Override
-            public boolean handle(Event event) {
 
-                city.setEdificioInCostruzione(TipoEdificio.FORNAIO);
-                return true;
-            }
-            public void changed(ChangeEvent event, Actor actor) {
-            }
-        });
-        pozzo.addListener(new ChangeListener() {
-            @Override
-            public boolean handle(Event event) {
-
-                city.setEdificioInCostruzione(TipoEdificio.POZZO);
-                return true;
-            }
-            public void changed(ChangeEvent event, Actor actor) {
-            }
-        });
 
         castle.addListener(new EventListener() {
             @Override
@@ -144,7 +111,7 @@ public class UIManager {
         });
 
 
-        mulino.addListener(new EventListener() {
+     /*   mulino.addListener(new EventListener() {
             @Override
             public boolean handle(Event event) {
                 if (!(event instanceof InputEvent) ||
@@ -153,7 +120,7 @@ public class UIManager {
 
                 return true;
             }
-        });
+        });*/
 
 
         road.addListener(new EventListener() {
@@ -208,6 +175,22 @@ public class UIManager {
         stage.addActor(table);
 
 
+    }
+
+    private void setButtonListener(TextButton campo_grano, final TipoEdificio te) {
+        campo_grano.addListener(new ChangeListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (!(event instanceof InputEvent) ||
+                        !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
+                    return false;
+
+                city.setEdificioInCostruzione(te);
+                return true;
+            }
+            public void changed(ChangeEvent event, Actor actor) {
+            }
+        });
     }
 
     private ImageButton buildImageButton(String fileName) {
