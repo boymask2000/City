@@ -33,13 +33,9 @@ public class MovingObject {
 
     private float precDist = 1000000;
 
-    public void move1() {
-        movement=moveTo();
-        if (movement == null) return;
-        modelInstance.transform.translate(Terrain.moveOnTerrain(movement));
-    }
+
     public void move() {
-        movement=moveTo();
+        movement=moveTo(job);
         if (movement == null) return;
         modelInstance.transform.translate(Terrain.moveOnTerrain(movement));
 
@@ -52,11 +48,13 @@ public class MovingObject {
             target = null;
             System.out.println("hit");
             Edificio hit = getAllEdifici().getNearest(position);
-
+            if(job!=null)
+job.notifyTaskCompleted();
             notifyJob();
         }
     }
     public void setJob(Job job) {
+        System.out.println(job);
         this.job = job;
         notifyJob();
     }
@@ -65,11 +63,14 @@ public class MovingObject {
         System.out.println("***************get notify !");
         System.out.println(getPosition());
         if (job == null) return;
-        job.next();
-        job.execTask();
-    }
 
-    public Vector3 moveTo1() {
+       boolean completed= job.execTask();
+       if(completed)notifyJobCompleted();
+    }
+    public void notifyJobCompleted() {
+
+    }
+ /*   public Vector3 moveTo1() {
         if(target==null)return null;
         position = modelInstance.transform.getTranslation(new Vector3());
 
@@ -87,9 +88,10 @@ public class MovingObject {
                 }
 System.out.println(bestMove);
         return bestMove;
-    }
+    }*/
 
-    public Vector3 moveTo() {
+    public Vector3 moveTo(Job job) {
+    //    this.job=job;
         if(target==null)return null;
         position = modelInstance.transform.getTranslation(new Vector3());
         float dx = target.x - position.x;

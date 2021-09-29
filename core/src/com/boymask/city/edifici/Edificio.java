@@ -22,7 +22,7 @@ public abstract class Edificio {
 
 
     private final Vector3 position;
-    private final TipoEdificio tipoEdificio;
+    protected final TipoEdificio tipoEdificio;
 
     private int idEdificio;
 
@@ -121,6 +121,9 @@ public abstract class Edificio {
         boolean b = inventario.getMerce(t);
         inventario.dump();
         return b;
+    }
+    public int getGiacenza(){
+        return inventario.getMerci().size();
     }
 
 

@@ -52,6 +52,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sound.midi.SysexMessage;
+
 public class City extends ApplicationAdapter implements InputProcessor {
 
     private CameraPosition cameraPosition;
@@ -127,18 +129,18 @@ public class City extends ApplicationAdapter implements InputProcessor {
         G3dModelLoader loader = new G3dModelLoader(jsonReader);
 
 
-        showTree("edifici/obj/house_type01.obj", 0, 5);
+  //      showTree("edifici/obj/house_type01.obj", 0, 5);
 
    //     house = loadModelInstance("edifici/house_type06.g3dj", 5, 5, 0);
 
 
 
-        Fornaio f = new Fornaio(this, 10, 10);
+    /*    Fornaio f = new Fornaio(this, 10, 10);
 
         f.produci();
         Pozzo p = new Pozzo(this, 10, 20);
         p.produci();
-
+*/
 
      //   house.transform.scale(5f, 5, 5f);
 
@@ -207,6 +209,11 @@ public class City extends ApplicationAdapter implements InputProcessor {
             modelBatch.render(i.getModelInstance(), environment);
             i.move();
         }
+
+     /*   for( Edificio ed: Edificio.getAllEdifici().getListaEdifici())
+        {
+            ed.produci();
+        }*/
 
 
         modelBatch.render(act);
@@ -313,6 +320,7 @@ public class City extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
         if (edificioInCostruzione != null) {
+            System.out.println("Creazione edificio "+edificioInCostruzione);
             Model mod = AllEdifici.getModelloEdificio(edificioInCostruzione);
             addActor(mod, x, y);
 
@@ -353,6 +361,7 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
     public void setEdificioInCostruzione(TipoEdificio edificioInCostruzione) {
         this.edificioInCostruzione = edificioInCostruzione;
+        System.out.println("Set EDIFiCIO "+edificioInCostruzione);
     }
 
 }

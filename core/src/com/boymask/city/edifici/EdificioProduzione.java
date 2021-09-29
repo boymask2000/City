@@ -33,22 +33,28 @@ public class EdificioProduzione extends Edificio {
     public void produci() {
         t = new Thread() {
             public void run() {
-                while (true) {
+                while (true)
+                {
+
+                    System.out.println( tipoEdificio );
                     try {
                         if (tipoMerceProdotte == null) {
-                            sleep(1000);
-                            return;
+                            System.out.println( tipoEdificio +" tipo merce non spacificata");
+                            sleep(5000);
+                            continue;
                         } // Non è stata specificata la merce da produrre
 
                         if (merciInUscita.getGiacenza() >= maxInventario) {
-                            sleep(1000);
-                            return;
+                            System.out.println( tipoEdificio +" max inventario");
+                            sleep(5000);
+                            continue;
                         }
 
                         if (!checkMateriePrime()) {
+                            System.out.println( tipoEdificio +" no materie prime");
                             creaOrdini();
-                            sleep(1000);
-                            return;
+                            sleep(5000);
+                            continue;
                         }
 
                         //--- Ora posso produrre
@@ -82,15 +88,22 @@ public class EdificioProduzione extends Edificio {
         for (VoceInventario v : matPrime.getMerci()) {
             int need = inventario.getGiacenza(v.getTipo()) + //
                     ordiniFatti.getGiacenza(v.getTipo())
-                    - v.getGiacenza();
+                    - getGiacenza()-5;
             while (need < 0) {
                 Order order = new Order(getIdEdificio(), v.getTipo());
                 getCity().getOrderManager().putOrder(order);
-                ordiniFatti.addMerce(v.getTipo(),1);
+                ordiniFatti.addMerce(v.getTipo(), 1);
                 need++;
             }
         }
 
+    }
+
+    @Override
+    public void addinInventario(TipoMerce t) {
+        super.addinInventario(t);
+        VoceInventario v = new VoceInventario(t, 1);
+        ordiniFatti.decurta(v);
     }
 
     public void produci2() {

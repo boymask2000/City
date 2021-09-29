@@ -94,7 +94,7 @@ public class UIManager {
         campo_grano.addListener(new ChangeListener() {
             @Override
             public boolean handle(Event event) {
-                System.out.println("ccc");
+
                 city.setEdificioInCostruzione(TipoEdificio.CAMPO_GRANO);
                 return true;
             }
@@ -104,7 +104,7 @@ public class UIManager {
         mulino.addListener(new ChangeListener() {
             @Override
             public boolean handle(Event event) {
-                System.out.println("ccc");
+
                 city.setEdificioInCostruzione(TipoEdificio.MULINO);
                 return true;
             }
@@ -114,7 +114,7 @@ public class UIManager {
         fornaio.addListener(new ChangeListener() {
             @Override
             public boolean handle(Event event) {
-                System.out.println("ccc");
+
                 city.setEdificioInCostruzione(TipoEdificio.FORNAIO);
                 return true;
             }
@@ -124,7 +124,7 @@ public class UIManager {
         pozzo.addListener(new ChangeListener() {
             @Override
             public boolean handle(Event event) {
-                System.out.println("ccc");
+
                 city.setEdificioInCostruzione(TipoEdificio.POZZO);
                 return true;
             }
@@ -139,7 +139,6 @@ public class UIManager {
                         !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
                     return false;
 
-                System.out.println("jjjj");
                 return true;
             }
         });
@@ -152,8 +151,6 @@ public class UIManager {
                         !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
                     return false;
 
-
-                System.out.println("mulino");
                 return true;
             }
         });

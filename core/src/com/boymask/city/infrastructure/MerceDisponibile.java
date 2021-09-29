@@ -5,6 +5,15 @@ import com.boymask.city.merci.TipoMerce;
 public class MerceDisponibile {
 
     private int idEdificio;
+
+    @Override
+    public String toString() {
+        return "MerceDisponibile{" +
+                "idEdificio=" + idEdificio +
+                ", tipoMerce=" + tipoMerce +
+                '}';
+    }
+
     private TipoMerce tipoMerce;
 
     public MerceDisponibile(int idEdificio, TipoMerce tipoMerce) {

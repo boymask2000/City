@@ -14,12 +14,21 @@ public class InventarioGlobale {
         merci.add(m);
         System.out.println("InventarioGlobale "+merci.size());
     }
-
     public synchronized MerceDisponibile getMerce() {
         if (merci.size() == 0) return null;
         MerceDisponibile m = merci.get(0);
         merci.remove(0);
         System.out.println("InventarioGlobale trovata merce"+m);
         return m;
+    }
+
+    public synchronized MerceDisponibile getMerce(TipoMerce tm) {
+        if (merci.size() == 0) return null;
+        for(MerceDisponibile md:merci)
+            if(md.getTipoMerce()==tm) {
+                merci.remove(md);
+                return md;
+            }
+        return null;
     }
 }

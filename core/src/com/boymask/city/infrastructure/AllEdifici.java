@@ -5,11 +5,13 @@ import com.badlogic.gdx.math.Vector3;
 import com.boymask.city.edifici.Edificio;
 import com.boymask.city.edifici.TipoEdificio;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AllEdifici {
-    private static Map<TipoEdificio, Model> modelliEdifici=new HashMap<>();
+    private static Map<TipoEdificio, Model> modelliEdifici = new HashMap<>();
 
     private Map<Integer, Edificio> map = new HashMap<>();
 
@@ -33,15 +35,24 @@ public class AllEdifici {
         return best;
     }
 
+    public List<Edificio> getListaEdifici() {
+        List<Edificio> lista = new ArrayList<>();
+        for (Map.Entry<Integer, Edificio> entry : map.entrySet()) {
+            lista.add(entry.getValue());
+        }
+        return lista;
+    }
+
     private int getDist(Edificio value, Vector3 v) {
 
         return (int) value.getPosition().dst(v);
     }
 
-    public static void setModelloEdificio( TipoEdificio tipo, Model model ){
-        modelliEdifici.put( tipo, model );
+    public static void setModelloEdificio(TipoEdificio tipo, Model model) {
+        modelliEdifici.put(tipo, model);
     }
-    public static Model getModelloEdificio( TipoEdificio tipo ){
-        return modelliEdifici.get( tipo);
+
+    public static Model getModelloEdificio(TipoEdificio tipo) {
+        return modelliEdifici.get(tipo);
     }
 }
