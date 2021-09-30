@@ -23,7 +23,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.boymask.city.edifici.Edificio;
 import com.boymask.city.edifici.TipoEdificio;
+import com.boymask.city.ui.TableDescrEdificio;
 
 public class UIManager {
 
@@ -33,12 +35,16 @@ public class UIManager {
     protected BitmapFont font;
     protected StringBuilder stringBuilder;
 
+    private  TableDescrEdificio tableDescrEdificio=new TableDescrEdificio();
+
     public UIManager(City city) {
         this.city = city;
     }
 
 
+
     public Stage createAll() {
+        tableDescrEdificio.setPosition(Gdx.graphics.getWidth()-50, Gdx.graphics.getHeight()-50);
         stage = new Stage();
         font = new BitmapFont();
         label = new Label(" ", new Label.LabelStyle(font, Color.WHITE));
@@ -53,11 +59,14 @@ public class UIManager {
         stringBuilder.append(" FPS: ").append(Gdx.graphics.getFramesPerSecond());
 
         label.setText(stringBuilder);
-
+        city.getInventarioGlobale().show();
         stage.draw();
     }
 
     public void buttons() {
+
+        stage.addActor(tableDescrEdificio);
+
         Table table = new Table();
         //  table.setFillParent(true);
         table.setPosition(100, Gdx.graphics.getHeight() - 100);
@@ -91,12 +100,17 @@ public class UIManager {
         table.add(campo_grano); table.row();
         table.add(deposito); table.row();
 
+        city.getInventarioGlobale().setShow(table);
+
+
         setButtonListener(campo_grano,TipoEdificio.CAMPO_GRANO);
         setButtonListener(mulino,TipoEdificio.MULINO);
         setButtonListener(fornaio,TipoEdificio.FORNAIO);
         setButtonListener(pozzo,TipoEdificio.POZZO);
 
 
+
+        stage.addActor(tableDescrEdificio);
 
 
         castle.addListener(new EventListener() {
@@ -109,18 +123,6 @@ public class UIManager {
                 return true;
             }
         });
-
-
-     /*   mulino.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                if (!(event instanceof InputEvent) ||
-                        !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
-                    return false;
-
-                return true;
-            }
-        });*/
 
 
         road.addListener(new EventListener() {
@@ -212,4 +214,14 @@ public class UIManager {
 
         return button2;
     }
+    void writeLabel( String text){
+        Label.LabelStyle style = new Label.LabelStyle();
+  //      style.background = ...; // Set the drawable you want to use
+
+        Label label = new Label("Text here", style);
+    }
+    public TableDescrEdificio getTableDescrEdificio() {
+        return tableDescrEdificio;
+    }
+
 }

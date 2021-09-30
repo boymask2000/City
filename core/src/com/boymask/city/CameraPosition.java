@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 public class CameraPosition {
 
     private PerspectiveCamera camera;
-    private Vector3 cameraPosition=new Vector3(30,30,30);
+    private Vector3 cameraPosition=new Vector3(30,40,30);
     private Vector3 cameraLookAt=new Vector3(0,0,0);
 
     public CameraPosition(){

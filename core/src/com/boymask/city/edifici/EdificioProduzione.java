@@ -17,12 +17,14 @@ public class EdificioProduzione extends Edificio {
 
 
     private Inventario ordiniFatti = new Inventario();
+
+
     private VoceInventario merciInUscita;
 
     private Merce tipoMerceProdotte = null;
 
-    public EdificioProduzione(TipoEdificio tipo, City city, Merce tipoMerceProdotte, int x, int y) {
-        super(tipo, city, x, y);
+    public EdificioProduzione(TipoEdificio tipo, City city, Merce tipoMerceProdotte, int x, int y, int z) {
+        super(tipo, city, x, y,z);
         this.tipoMerceProdotte = tipoMerceProdotte;
         merciInUscita = new VoceInventario(tipoMerceProdotte.getTipo());
     }
@@ -157,5 +159,8 @@ public class EdificioProduzione extends Edificio {
             if (!inventario.in(v)) return false;
         }
         return true;
+    }
+    public VoceInventario getMerciInUscita() {
+        return merciInUscita;
     }
 }

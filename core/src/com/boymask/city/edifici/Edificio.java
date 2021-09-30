@@ -9,6 +9,7 @@ import com.boymask.city.City;
 import com.boymask.city.infrastructure.AllEdifici;
 import com.boymask.city.merci.Inventario;
 import com.boymask.city.merci.TipoMerce;
+import com.boymask.city.merci.VoceInventario;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +23,9 @@ public abstract class Edificio {
 
 
     private final Vector3 position;
+
+
+
     protected final TipoEdificio tipoEdificio;
 
     private int idEdificio;
@@ -39,8 +43,6 @@ public abstract class Edificio {
     private Model model;
     private static AssetManager am = new AssetManager();
 
-    public static Model modelFornaio;
-    public static Model modelPozzo;
 
     protected Inventario inventario = new Inventario();
 
@@ -74,6 +76,7 @@ public abstract class Edificio {
 
     //***************************************************************************************************
     public abstract void produci();
+
     //***************************************************************************************************
 
     private synchronized int createId() {
@@ -81,13 +84,13 @@ public abstract class Edificio {
         return CURRID;
     }
 
-    public Edificio(TipoEdificio tipo, City city, int x, int y) {
+    public Edificio(TipoEdificio tipo, City city, int x, int y, int z) {
         this.tipoEdificio = tipo;
         this.city = city;
         this.idEdificio = createId();
         this.model = AllEdifici.getModelloEdificio(tipo);
-        modelInstance = new ModelInstance(model, x, y, 0);
-        position = new Vector3(x, y, 0);
+        modelInstance = new ModelInstance(model, x, y, z);
+        position = new Vector3(x, y, z);
 
         elencoEdifici.add(this);
         istanceEdifici.add(modelInstance);
@@ -171,28 +174,35 @@ public abstract class Edificio {
         return am.get(fileName, Model.class);
     }
 
-    public static Edificio createEdificio(TipoEdificio tipo,City city, int x, int y) {
+    public static Edificio createEdificio(TipoEdificio tipo,City city, int x, int y, int z) {
         Edificio ed = null;
         switch (tipo) {
             case POZZO:
-                ed = new Pozzo(city,x,y);
+                ed = new Pozzo(city,x,y,z);
                 break;
             case MULINO:
-                ed = new Mulino(city,x,y);
+                ed = new Mulino(city,x,y,z);
                 break;
             case FORNAIO:
-                ed = new Fornaio(city,x,y);
+                ed = new Fornaio(city,x,y,z);
                 break;
             case CAMPO_GRANO:
-                ed = new CampoDiGrano(city,x,y);
+                ed = new CampoDiGrano(city,x,y,z);
                 break;
             case CASTELLO:
-                ed = new Castello(city,x,y);
+                ed = new Castello(city,x,y,z);
                 break;
             case DEPOSITO:
               //  ed = new Deposito(city,x,y);
                 break;
         }
         return ed;
+    }
+
+    public Inventario getInventario() {
+        return inventario;
+    }
+    public TipoEdificio getTipoEdificio() {
+        return tipoEdificio;
     }
 }

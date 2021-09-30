@@ -267,6 +267,40 @@ public class City extends ApplicationAdapter implements InputProcessor {
         return false;
     }
 
+    public Edificio getEdificioAtMouse( int screenX, int screenY) {
+        Vector3 pos=fromScreenTo3d(  screenX,  screenY);
+        float minDist=10000;
+        Edificio best=null;
+        for( Edificio ed: Edificio.getAllEdifici().getListaEdifici())
+        {
+            float dist = ed.getPosition().dst(pos);
+            if(dist<minDist){
+                minDist=dist;
+                best=ed;
+            }
+        }
+        if(minDist<0.5)
+        return best;
+        return null;
+    }
+
+    public Vector3 fromScreenTo3d( int screenX, int screenY){
+        Vector3 tmpVector = new Vector3();
+        Ray ray = cameraPosition.getCamera().getPickRay(screenX, screenY);
+        final float distance = -ray.origin.y / ray.direction.y;
+        tmpVector.set(ray.direction).scl(distance).add(ray.origin);
+        //     modelInstance.transform.setTranslation(tmpVector);
+
+        int DELTA = 2;
+        tmpVector.x = (int) (tmpVector.x / DELTA);
+        tmpVector.x *= DELTA;
+        tmpVector.y = (int) (tmpVector.y / DELTA);
+        tmpVector.y *= DELTA;
+        tmpVector.z = (int) (tmpVector.z / DELTA);
+        tmpVector.z *= DELTA;
+        return tmpVector;
+    }
+
 
     public MovingObject addActor(Model mod, int screenX, int screenY) {
         Vector3 tmpVector = new Vector3();
@@ -310,6 +344,9 @@ public class City extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean mouseMoved(int x, int y) {
 
+        Edificio ed = getEdificioAtMouse(x,y);
+        if(ed!=null)uiManager.getTableDescrEdificio().show(ed);
+
         if (prev != null)
             objs.remove(prev);
         MovingObject mo = addActor(reteStradale.getStreetElementModel(), x, y);
@@ -324,7 +361,10 @@ public class City extends ApplicationAdapter implements InputProcessor {
             Model mod = AllEdifici.getModelloEdificio(edificioInCostruzione);
             MovingObject mo = addActor(mod, x, y);
 
-            Edificio ed =  Edificio.createEdificio(edificioInCostruzione, this,(int)mo.getPosition().x,(int) mo.getPosition().y);
+            Edificio ed =  Edificio.createEdificio(edificioInCostruzione, this,
+                    (int)mo.getPosition().x,
+                    (int) mo.getPosition().y,
+                    (int) mo.getPosition().z);
        //    Edificio ed =  Edificio.createEdificio(edificioInCostruzione, this,x,y);
            ed.produci();
 

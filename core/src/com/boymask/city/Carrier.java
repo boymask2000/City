@@ -70,8 +70,9 @@ public class Carrier extends MovingObject {
             setWorking(false);
             return;
         }
-        System.out.println(" trovato !");
-        Edificio srcEdificio = searchEdificioTarget(order.getTipoMerce());
+        System.out.println("Cerrier trovato ordine : "+order);
+
+        Edificio srcEdificio = searchFornitore(order.getTipoMerce());
 
         //setTarget(srcEdificio.getPosition());
         if (srcEdificio == null) {
@@ -79,6 +80,7 @@ public class Carrier extends MovingObject {
             setWorking(false);
             return;
         }
+        System.out.println("Cerrier trovato fornitore : "+srcEdificio);
         Edificio trgEdificio = Edificio.getEdificioById(order.getIdEdificio());
         
         MerceDisponibile md = new MerceDisponibile(trgEdificio.getIdEdificio(), order.getTipoMerce());
@@ -87,31 +89,7 @@ public class Carrier extends MovingObject {
         return;
     }
 
-    public void workold() {
-        if (isWorking()) {
-            setWorking(!job.isJobCompleted());
-            return;
-        }
-        System.out.println("WORK ");
-        MerceDisponibile m = inventarioGlobale.getMerce();
-        if (m == null) {
-            System.out.println("non trovato ");
-            setWorking(false);
-            return;
-        }
-        System.out.println(" -trovato !");
-        Edificio srcEdificio = Edificio.getEdificioById(m.getIdEdificio());
-        Edificio trgEdificio = searchEdificioTarget(m.getTipoMerce());
-        //setTarget(srcEdificio.getPosition());
-        if (trgEdificio == null) {
-            inventarioGlobale.addMerce(m);
-            setWorking(false);
-            return;
-        }
-        job = createJob(srcEdificio, trgEdificio, m);
-        setWorking(true);
-        return;
-    }
+
 
     @Override
     public synchronized void notifyJobCompleted() {
@@ -156,7 +134,7 @@ public class Carrier extends MovingObject {
     }
 
 
-    private Edificio searchEdificioTarget(TipoMerce tipoMerce) {
+    private Edificio searchFornitore(TipoMerce tipoMerce) {
 
         MerceDisponibile md = inventarioGlobale.getMerce(tipoMerce);
         if (md != null) {
