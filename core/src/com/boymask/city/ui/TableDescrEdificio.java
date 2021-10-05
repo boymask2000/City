@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.boymask.city.edifici.Edificio;
 import com.boymask.city.edifici.EdificioProduzione;
+import com.boymask.city.merci.Inventario;
 import com.boymask.city.merci.VoceInventario;
 
 import java.util.ArrayList;
@@ -30,6 +31,13 @@ public class TableDescrEdificio extends Table {
         if( ed instanceof EdificioProduzione){
             EdificioProduzione prd = (EdificioProduzione) ed;
             VoceInventario ll = prd.getMerciInUscita();
+            String name = ll.getTipo().name();
+            Integer num = ll.getGiacenza();
+            vals.put(name, num);
+        }
+        Inventario inventario = ed.getInventario();
+        List<VoceInventario> mm = inventario.getMerci();
+        for( VoceInventario ll :mm){
             String name = ll.getTipo().name();
             Integer num = ll.getGiacenza();
             vals.put(name, num);

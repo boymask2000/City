@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
@@ -78,7 +79,7 @@ public class UIManager {
         ImageButton left_arrow = buildImageButton("bottoni/left-arrow50.png");
         ImageButton up_arrow = buildImageButton("bottoni/up-arrow50.png");
         ImageButton right_arrow = buildImageButton("bottoni/right-arrow50.png");
-        ImageButton hades = buildImageButton("bottoni/hades-symbol50.png");
+        final ImageButton carrier = buildImageButton("bottoni/hades-symbol50.png");
         TextButton pozzo = createTextButton("Pozzo");
         TextButton castello = createTextButton("Castello");
         TextButton fornaio = createTextButton("Fornaio");
@@ -99,6 +100,7 @@ public class UIManager {
         table.add(mulino); table.row();
         table.add(campo_grano); table.row();
         table.add(deposito); table.row();
+        table.add(carrier); table.row();
 
         city.getInventarioGlobale().setShow(table);
 
@@ -133,6 +135,17 @@ public class UIManager {
                     return false;
 
                 city.getReteStradale().startRoad();
+                return true;
+            }
+        });
+        carrier.addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (!(event instanceof InputEvent) ||
+                        !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
+                    return false;
+Carrier.create();
+
                 return true;
             }
         });
@@ -179,8 +192,8 @@ public class UIManager {
 
     }
 
-    private void setButtonListener(TextButton campo_grano, final TipoEdificio te) {
-        campo_grano.addListener(new ChangeListener() {
+    private void setButtonListener(TextButton b, final TipoEdificio te) {
+        b.addListener(new ChangeListener() {
             @Override
             public boolean handle(Event event) {
                 if (!(event instanceof InputEvent) ||

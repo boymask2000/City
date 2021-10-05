@@ -1,6 +1,12 @@
 package com.boymask.city;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.g3d.Material;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.boymask.city.edifici.Edificio;
 import com.boymask.city.infrastructure.AllEdifici;
 import com.boymask.city.infrastructure.InventarioGlobale;
@@ -29,6 +35,18 @@ public class Carrier extends MovingObject {
         this.inventarioGlobale = city.getInventarioGlobale();
         this.ordermanager = city.getOrderManager();
 
+    }
+
+    public static Carrier create(){
+        ModelBuilder modelBuilder = new ModelBuilder();
+        Model box = modelBuilder.createBox(2f, 2f, 2f,
+                new Material(ColorAttribute.createDiffuse(Color.BLUE)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        ModelInstance mmm = new ModelInstance(box, 10, 20, 30);
+        Carrier r = new Carrier(City.theCity,mmm );
+        City.theCity.addMovingObject(r);
+        r.workCycle();
+        return r;
     }
 
 
@@ -63,7 +81,8 @@ public class Carrier extends MovingObject {
         }
         System.out.println("WORK ");
         Order order = ordermanager.getNextOrder();
-
+if( order!=null)
+    System.out.println("");
 
         if (order == null) {
             System.out.println("non trovato ");

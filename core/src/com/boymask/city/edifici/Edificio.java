@@ -67,7 +67,10 @@ public abstract class Edificio {
             "edifici/obj/house_type18.obj", //
             "edifici/obj/house_type19.obj", //
             "edifici/obj/house_type20.obj", //
-            "edifici/obj/house_type21.obj" //
+            "edifici/obj/house_type21.obj", //
+
+            "edifici/ship.obj",
+            "edifici/house_type18.g3db" //
     };
 
     static {
@@ -151,8 +154,10 @@ public abstract class Edificio {
         AllEdifici.setModelloEdificio(TipoEdificio.CASTELLO, getModel("edifici/obj/house_type19.obj"));
         AllEdifici.setModelloEdificio(TipoEdificio.DEPOSITO, getModel("edifici/obj/house_type18.obj"));
         AllEdifici.setModelloEdificio(TipoEdificio.MULINO, getModel("edifici/obj/house_type17.obj"));
-        AllEdifici.setModelloEdificio(TipoEdificio.CAMPO_GRANO, getModel("edifici/obj/house_type16.obj"));
+   //     AllEdifici.setModelloEdificio(TipoEdificio.CAMPO_GRANO, getModel("edifici/obj/house_type16.obj"));
         AllEdifici.setModelloEdificio(TipoEdificio.DEPOSITO, getModel("edifici/obj/house_type18.obj"));
+
+        AllEdifici.setModelloEdificio(TipoEdificio.CAMPO_GRANO, getModel("edifici/ship.obj"));
     }
 
 

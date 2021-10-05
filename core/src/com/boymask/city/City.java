@@ -55,7 +55,7 @@ import java.util.List;
 import javax.sound.midi.SysexMessage;
 
 public class City extends ApplicationAdapter implements InputProcessor {
-
+public static City theCity;
     private CameraPosition cameraPosition;
     private ModelBatch modelBatch;
     private ModelBuilder modelBuilder;
@@ -90,6 +90,7 @@ public class City extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void create() {
+        theCity=this;
         cameraPosition = new CameraPosition();
         uiManager = new UIManager(this);
         Stage input = uiManager.createAll();
@@ -150,7 +151,9 @@ public class City extends ApplicationAdapter implements InputProcessor {
         r.workCycle();
 
     }
-
+public void addMovingObject( MovingObject m){
+        objs.add(m);
+}
     private Environment createEnvironment() {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 0.8f, 0.8f, 1f));
