@@ -14,13 +14,8 @@ import java.util.List;
 
 public class EdificioProduzione extends Edificio {
     private int maxInventario = 5;
-
-
     private Inventario ordiniFatti = new Inventario();
-
-
     private VoceInventario merciInUscita;
-
     private Merce tipoMerceProdotte = null;
 
     public EdificioProduzione(TipoEdificio tipo, City city, Merce tipoMerceProdotte, int x, int y, int z) {
@@ -65,7 +60,7 @@ public class EdificioProduzione extends Edificio {
                         sleep(1000 * nsecs);
                         decurtaMateriePrime();
                         incrementaMerciInUscita();
-                        aggiornaInventarioGlobale();
+                        aggiornaInventarioGlobale(tipoMerceProdotte.getTipo());
 
                         System.out.println(merciInUscita.toString());
 
@@ -80,8 +75,8 @@ public class EdificioProduzione extends Edificio {
 
     }
 
-    private void aggiornaInventarioGlobale() {
-        MerceDisponibile md = new MerceDisponibile(getIdEdificio(), tipoMerceProdotte.getTipo());
+    private void aggiornaInventarioGlobale(TipoMerce tipoMerce) {
+        MerceDisponibile md = new MerceDisponibile(getIdEdificio(), tipoMerce);
         getCity().getInventarioGlobale().addMerce(md);
     }
 
@@ -106,39 +101,6 @@ public class EdificioProduzione extends Edificio {
         super.addinInventario(t);
         VoceInventario v = new VoceInventario(t, 1);
         ordiniFatti.decurta(v);
-    }
-
-    public void produci2() {
-        if (tipoMerceProdotte == null) return; // Non è stata specificata la merce da produrre
-
-        if (merciInUscita.getGiacenza() >= maxInventario) return;
-        if (!checkMateriePrime()) return;
-
-        //--- Ora posso produrre
-        final int nsecs = tipoMerceProdotte.getTempoProduzione();
-
-        if (t != null && t.isAlive()) {
-            System.out.println("VIVO");
-            return;
-        }
-        System.out.println("ok");
-
-        t = new Thread() {
-            public void run() {
-                try {
-                    sleep(1000 * nsecs);
-                    decurtaMateriePrime();
-                    incrementaMerciInUscita();
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        };
-        t.start();
-
-
     }
 
     private void incrementaMerciInUscita() {
