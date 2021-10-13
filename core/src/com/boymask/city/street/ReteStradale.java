@@ -39,7 +39,7 @@ public class ReteStradale {
     }
 
     public StreetBlock addElement(int x, int y) {
-        city.addActor(getStreetElementModel(), x, y);
+
         return add(x, y);
     }
 

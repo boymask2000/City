@@ -2,6 +2,7 @@ package com.boymask.city.edifici;
 
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.boymask.city.City;
+import com.boymask.city.core.LevelScreen;
 import com.boymask.city.infrastructure.MerceDisponibile;
 import com.boymask.city.infrastructure.Order;
 import com.boymask.city.merci.Inventario;
@@ -18,22 +19,20 @@ public class EdificioProduzione extends Edificio {
     private VoceInventario merciInUscita;
     private Merce tipoMerceProdotte = null;
 
-    public EdificioProduzione(TipoEdificio tipo, City city, Merce tipoMerceProdotte, int x, int y, int z) {
+    public EdificioProduzione(TipoEdificio tipo, LevelScreen city, Merce tipoMerceProdotte, int x, int y, int z) {
         super(tipo, city, x, y,z);
         this.tipoMerceProdotte = tipoMerceProdotte;
         merciInUscita = new VoceInventario(tipoMerceProdotte.getTipo());
     }
 
-    private Thread t;
+
 
     @Override
     public void produci() {
-        t = new Thread() {
+        Thread t = new Thread() {
             public void run() {
                 while (true)
                 {
-
-                    System.out.println( tipoEdificio );
                     try {
                         if (tipoMerceProdotte == null) {
                             System.out.println( tipoEdificio +" tipo merce non spacificata");
@@ -77,7 +76,7 @@ public class EdificioProduzione extends Edificio {
 
     private void aggiornaInventarioGlobale(TipoMerce tipoMerce) {
         MerceDisponibile md = new MerceDisponibile(getIdEdificio(), tipoMerce);
-        getCity().getInventarioGlobale().addMerce(md);
+     //   getCity().getInventarioGlobale().addMerce(md);
     }
 
     private void creaOrdini() {
@@ -88,7 +87,7 @@ public class EdificioProduzione extends Edificio {
                     - getGiacenza()-5;
             while (need < 0) {
                 Order order = new Order(getIdEdificio(), v.getTipo());
-                getCity().getOrderManager().putOrder(order);
+          //      getCity().getOrderManager().putOrder(order);
                 ordiniFatti.addMerce(v.getTipo(), 1);
                 need++;
             }

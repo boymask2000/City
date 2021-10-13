@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.boymask.city.core.LevelScreen;
 import com.boymask.city.edifici.Edificio;
 import com.boymask.city.infrastructure.AllEdifici;
 import com.boymask.city.infrastructure.InventarioGlobale;
@@ -25,25 +26,25 @@ import java.util.List;
 public class Carrier extends MovingObject {
 
 
-    private final OrderManager ordermanager;
+ //   private final OrderManager ordermanager;
     private TipoMerce carico = null;
-    private final InventarioGlobale inventarioGlobale;
+ //   private final InventarioGlobale inventarioGlobale;
     private Job job;
 
-    public Carrier(City city, ModelInstance modelInstance) {
-        super(city, modelInstance);
-        this.inventarioGlobale = city.getInventarioGlobale();
-        this.ordermanager = city.getOrderManager();
+    public Carrier(int x, int y, int z, LevelScreen city, ModelInstance modelInstance) {
+        super(x,y,z, city, modelInstance);
+   //     this.inventarioGlobale = city.getInventarioGlobale();
+    //    this.ordermanager = city.getOrderManager();
 
     }
 
-    public static Carrier create(){
+    public static Carrier create(int x, int y, int z, LevelScreen lvl){
         ModelBuilder modelBuilder = new ModelBuilder();
         Model box = modelBuilder.createBox(2f, 2f, 2f,
                 new Material(ColorAttribute.createDiffuse(Color.BLUE)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
         ModelInstance mmm = new ModelInstance(box, 10, 20, 30);
-        Carrier r = new Carrier(City.theCity,mmm );
+        Carrier r = new Carrier(x,y,z, lvl,mmm );
         City.theCity.addMovingObject(r);
         r.workCycle();
         return r;
@@ -75,6 +76,7 @@ public class Carrier extends MovingObject {
     }
 
     public void workByOrder() {
+        /*
         if (isWorking()) {
             setWorking(!job.isJobCompleted());
             return;
@@ -105,6 +107,8 @@ if( order!=null)
         MerceDisponibile md = new MerceDisponibile(trgEdificio.getIdEdificio(), order.getTipoMerce());
         job = createJob(srcEdificio, trgEdificio, md);
         setWorking(true);
+
+         */
         return;
     }
 
@@ -154,12 +158,14 @@ if( order!=null)
 
 
     private Edificio searchFornitore(TipoMerce tipoMerce) {
-
+/*
         MerceDisponibile md = inventarioGlobale.getMerce(tipoMerce);
         if (md != null) {
             Edificio ed = Edificio.getEdificioById(md.getIdEdificio());
             return ed;
         }
+
+ */
         return null;
     }
 

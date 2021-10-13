@@ -2,6 +2,7 @@ package com.boymask.city;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -33,6 +34,10 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.UBJsonReader;
+import com.boymask.city.core.BaseGame;
+import com.boymask.city.core.Box;
+import com.boymask.city.core.Stage3D;
+import com.boymask.city.edifici.Boscaiolo;
 import com.boymask.city.edifici.Edificio;
 import com.boymask.city.edifici.Fornaio;
 import com.boymask.city.edifici.Pozzo;
@@ -54,11 +59,16 @@ import java.util.List;
 
 import javax.sound.midi.SysexMessage;
 
-public class City extends ApplicationAdapter implements InputProcessor {
+public class City extends BaseGame implements InputProcessor {
 public static City theCity;
     private CameraPosition cameraPosition;
     private ModelBatch modelBatch;
     private ModelBuilder modelBuilder;
+
+    public Model getBox() {
+        return box;
+    }
+
     private Model box;
 
     private ModelInstance modelInstance;
@@ -87,9 +97,20 @@ public static City theCity;
     private List<ModelInstance> act = new ArrayList<>();
 
     private InventarioGlobale inventarioGlobale = new InventarioGlobale();
-
+    private Stage3D stage3d ;
     @Override
     public void create() {
+        super.create();
+
+        Stage3D stage3d = new Stage3D();
+
+        Box box = new Box(10,10,10,stage3d );
+
+        stage3d.act(1);
+        stage3d.draw();
+    }
+
+    public void createold() {
         theCity=this;
         cameraPosition = new CameraPosition();
         uiManager = new UIManager(this);
@@ -145,10 +166,10 @@ public static City theCity;
 
      //   house.transform.scale(5f, 5, 5f);
 
-        ModelInstance mmm = new ModelInstance(box, 10, 20, 30);
-        Carrier r = new Carrier(this, mmm);
+       /* ModelInstance mmm = new ModelInstance(box, 10, 20, 30);
+        Carrier r = new Carrier(10,10,10,this, mmm);
         objs.add(r);
-        r.workCycle();
+        r.workCycle();*/
 
     }
 public void addMovingObject( MovingObject m){
@@ -195,8 +216,8 @@ public void addMovingObject( MovingObject m){
     }
 
 
-    @Override
-    public void render() {
+
+    public void renderold() {
 
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -217,7 +238,8 @@ public void addMovingObject( MovingObject m){
         {
             ed.produci();
         }*/
-
+        Boscaiolo b = new Boscaiolo(this, 10,14,16);
+        b.produci();
 
         modelBatch.render(act);
 
@@ -305,28 +327,6 @@ public void addMovingObject( MovingObject m){
     }
 
 
-    public MovingObject addActor(Model mod, int screenX, int screenY) {
-        Vector3 tmpVector = new Vector3();
-        Ray ray = cameraPosition.getCamera().getPickRay(screenX, screenY);
-        final float distance = -ray.origin.y / ray.direction.y;
-        tmpVector.set(ray.direction).scl(distance).add(ray.origin);
-        //     modelInstance.transform.setTranslation(tmpVector);
-
-        int DELTA = 2;
-        tmpVector.x = (int) (tmpVector.x / DELTA);
-        tmpVector.x *= DELTA;
-        tmpVector.y = (int) (tmpVector.y / DELTA);
-        tmpVector.y *= DELTA;
-        tmpVector.z = (int) (tmpVector.z / DELTA);
-        tmpVector.z *= DELTA;
-
-        ModelInstance m = new ModelInstance(mod, tmpVector.x, tmpVector.y, tmpVector.z);
-
-        MovingObject mo = new MovingObject(this, m);
-        m.transform.scale(5f, 5, 5f);
-        objs.add(mo);
-        return mo;
-    }
 
 
     @Override
@@ -352,8 +352,7 @@ public void addMovingObject( MovingObject m){
 
         if (prev != null)
             objs.remove(prev);
-        MovingObject mo = addActor(reteStradale.getStreetElementModel(), x, y);
-        prev = mo;
+
         return true;
     }
 
@@ -361,21 +360,9 @@ public void addMovingObject( MovingObject m){
     public boolean touchDown(int x, int y, int pointer, int button) {
         if (edificioInCostruzione != null) {
             System.out.println("Creazione edificio "+edificioInCostruzione);
-            Model mod = AllEdifici.getModelloEdificio(edificioInCostruzione);
-            MovingObject mo = addActor(mod, x, y);
 
-            Edificio ed =  Edificio.createEdificio(edificioInCostruzione, this,
-                    (int)mo.getPosition().x,
-                    (int) mo.getPosition().y,
-                    (int) mo.getPosition().z);
-       //    Edificio ed =  Edificio.createEdificio(edificioInCostruzione, this,x,y);
-           ed.produci();
 
             edificioInCostruzione = null;
-        }
-        if (reteStradale.isRoadBuilding()) {
-            addActor(reteStradale.getStreetElementModel(), x, y);
-            return true;
         }
 
         return true;

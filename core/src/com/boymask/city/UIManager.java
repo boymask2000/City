@@ -144,7 +144,7 @@ public class UIManager {
                 if (!(event instanceof InputEvent) ||
                         !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
                     return false;
-Carrier.create();
+
 
                 return true;
             }

@@ -4,13 +4,14 @@ import static com.boymask.city.edifici.Edificio.*;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
+import com.boymask.city.core.LevelScreen;
+import com.boymask.city.core.ObjModel;
 import com.boymask.city.edifici.Edificio;
 import com.boymask.city.job.Job;
 
-public class MovingObject {
+public class MovingObject extends ObjModel {
 
 
-    private final City city;
     private ModelInstance modelInstance;
     private Vector3 movement;
     private Vector3 position;
@@ -22,25 +23,29 @@ public class MovingObject {
     private Job job;
 
 
-    public MovingObject(City city, ModelInstance modelInstance) {
+
+
+    public void setModelInstance(ModelInstance modelInstance) {
         this.modelInstance = modelInstance;
-        this.city = city;
-
-
         position = modelInstance.transform.getTranslation(new Vector3());
+    }
 
+    public MovingObject(int x, int y, int z, LevelScreen city, ModelInstance modelInstance) {
+        super(x, y, z, city.getMainStage3D());
+
+        setModelInstance(modelInstance);
     }
 
     private float precDist = 1000000;
 
 
     public void move() {
-        movement=moveTo(job);
+        movement = moveTo(job);
         if (movement == null) return;
         modelInstance.transform.translate(Terrain.moveOnTerrain(movement));
 
         position = modelInstance.transform.getTranslation(new Vector3());
-        float dist = target.dst( position);
+        float dist = target.dst(position);
 
         //   if (dist < precDist) precDist = dist;
         if (dist < 0.1) {
@@ -48,11 +53,12 @@ public class MovingObject {
             target = null;
             System.out.println("hit");
             Edificio hit = getAllEdifici().getNearest(position);
-            if(job!=null)
-job.notifyTaskCompleted();
-            notifyJob();
+            if (job != null)
+                job.notifyTaskCompleted();
+          //  notifyJob();
         }
     }
+
     public void setJob(Job job) {
         System.out.println(job);
         this.job = job;
@@ -61,12 +67,13 @@ job.notifyTaskCompleted();
 
     public void notifyJob() {
         System.out.println("***************get notify !");
-        System.out.println(getPosition());
+
         if (job == null) return;
 
-       boolean completed= job.execTask();
-       if(completed)notifyJobCompleted();
+        boolean completed = job.execTask();
+        if (completed) notifyJobCompleted();
     }
+
     public void notifyJobCompleted() {
 
     }
@@ -91,8 +98,8 @@ System.out.println(bestMove);
     }*/
 
     public Vector3 moveTo(Job job) {
-    //    this.job=job;
-        if(target==null)return null;
+        //    this.job=job;
+        if (target == null) return null;
         position = modelInstance.transform.getTranslation(new Vector3());
         float dx = target.x - position.x;
         float dy = target.y - position.y;
@@ -115,9 +122,9 @@ System.out.println(bestMove);
         float deltay = factY * dy * DELTA / max;
         float deltaz = factZ * dz * DELTA / max;
         movement = new Vector3(deltax, deltay, deltaz);
-       // System.out.println("Movement: " + movement);
+        // System.out.println("Movement: " + movement);
         this.target = target;
-return movement;
+        return movement;
     }
 
     public Vector3 getPosition() {
@@ -140,7 +147,5 @@ return movement;
     public void setTarget(Vector3 target) {
         this.target = target;
     }
-    public City getCity() {
-        return city;
-    }
+
 }

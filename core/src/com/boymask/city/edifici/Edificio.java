@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.boymask.city.City;
+import com.boymask.city.core.LevelScreen;
+import com.boymask.city.core.ObjModel;
 import com.boymask.city.infrastructure.AllEdifici;
 import com.boymask.city.merci.Inventario;
 import com.boymask.city.merci.TipoMerce;
@@ -16,34 +18,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Edificio {
+public abstract class Edificio extends ObjModel {
+
     private static int CURRID = 0;
-
-    private final City city;
-
-
-    private final Vector3 position;
-
-
-
     protected final TipoEdificio tipoEdificio;
-
     private int idEdificio;
-
-
     public static AllEdifici allEdifici = new AllEdifici();
-
-
     private final static List<Edificio> elencoEdifici = new ArrayList<>();
     private final static List<ModelInstance> istanceEdifici = new ArrayList<>();
-
-
-    private final ModelInstance modelInstance;
-    private ModelBuilder modelBuilder = new ModelBuilder();
-    private Model model;
     private static AssetManager am = new AssetManager();
-
-
     protected Inventario inventario = new Inventario();
 
     private static final String[] filenames = {
@@ -87,13 +70,19 @@ public abstract class Edificio {
         return CURRID;
     }
 
-    public Edificio(TipoEdificio tipo, City city, int x, int y, int z) {
+    public Edificio(TipoEdificio tipo, LevelScreen city, int x, int y, int z) {
+        super(x, y, z, city.getMainStage3D());
+        Model model = AllEdifici.getModelloEdificio(tipo);
+        ModelInstance modelInstance = new ModelInstance(model, x, y, z);
+
+        loadObjModel(modelInstance);
+        setBasePolygon();
+        //   setScale(3,3,3);
+
+
         this.tipoEdificio = tipo;
-        this.city = city;
+
         this.idEdificio = createId();
-        this.model = AllEdifici.getModelloEdificio(tipo);
-        modelInstance = new ModelInstance(model, x, y, z);
-        position = new Vector3(x, y, z);
 
         elencoEdifici.add(this);
         istanceEdifici.add(modelInstance);
@@ -105,14 +94,6 @@ public abstract class Edificio {
 
     public int getIdEdificio() {
         return idEdificio;
-    }
-
-    public City getCity() {
-        return city;
-    }
-
-    public Vector3 getPosition() {
-        return position;
     }
 
 
@@ -128,7 +109,8 @@ public abstract class Edificio {
         inventario.dump();
         return b;
     }
-    public int getGiacenza(){
+
+    public int getGiacenza() {
         return inventario.getMerci().size();
     }
 
@@ -154,7 +136,7 @@ public abstract class Edificio {
         AllEdifici.setModelloEdificio(TipoEdificio.CASTELLO, getModel("edifici/obj/house_type19.obj"));
         AllEdifici.setModelloEdificio(TipoEdificio.DEPOSITO, getModel("edifici/obj/house_type18.obj"));
         AllEdifici.setModelloEdificio(TipoEdificio.MULINO, getModel("edifici/obj/house_type17.obj"));
-   //     AllEdifici.setModelloEdificio(TipoEdificio.CAMPO_GRANO, getModel("edifici/obj/house_type16.obj"));
+        //     AllEdifici.setModelloEdificio(TipoEdificio.CAMPO_GRANO, getModel("edifici/obj/house_type16.obj"));
         AllEdifici.setModelloEdificio(TipoEdificio.DEPOSITO, getModel("edifici/obj/house_type18.obj"));
 
         AllEdifici.setModelloEdificio(TipoEdificio.CAMPO_GRANO, getModel("edifici/ship.obj"));
@@ -179,26 +161,26 @@ public abstract class Edificio {
         return am.get(fileName, Model.class);
     }
 
-    public static Edificio createEdificio(TipoEdificio tipo,City city, int x, int y, int z) {
+    public static Edificio createEdificio(TipoEdificio tipo, City city, int x, int y, int z) {
         Edificio ed = null;
         switch (tipo) {
             case POZZO:
-                ed = new Pozzo(city,x,y,z);
+                //  ed = new Pozzo(city,x,y,z);
                 break;
             case MULINO:
-                ed = new Mulino(city,x,y,z);
+                //     ed = new Mulino(city,x,y,z);
                 break;
             case FORNAIO:
-                ed = new Fornaio(city,x,y,z);
+                //       ed = new Fornaio(city,x,y,z);
                 break;
             case CAMPO_GRANO:
-                ed = new CampoDiGrano(city,x,y,z);
+                //           ed = new CampoDiGrano(city,x,y,z);
                 break;
             case CASTELLO:
-                ed = new Castello(city,x,y,z);
+                //        ed = new Castello(city,x,y,z);
                 break;
             case DEPOSITO:
-              //  ed = new Deposito(city,x,y);
+                //  ed = new Deposito(city,x,y);
                 break;
         }
         return ed;
@@ -207,6 +189,7 @@ public abstract class Edificio {
     public Inventario getInventario() {
         return inventario;
     }
+
     public TipoEdificio getTipoEdificio() {
         return tipoEdificio;
     }
