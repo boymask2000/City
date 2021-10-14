@@ -102,7 +102,7 @@ public class UIManager {
         table.add(deposito); table.row();
         table.add(carrier); table.row();
 
-        city.getInventarioGlobale().setShow(table);
+   //     city.getInventarioGlobale().setShow(table);
 
 
         setButtonListener(campo_grano,TipoEdificio.CAMPO_GRANO);
@@ -127,17 +127,7 @@ public class UIManager {
         });
 
 
-        road.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                if (!(event instanceof InputEvent) ||
-                        !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
-                    return false;
 
-                city.getReteStradale().startRoad();
-                return true;
-            }
-        });
         carrier.addListener(new EventListener() {
             @Override
             public boolean handle(Event event) {
@@ -151,40 +141,6 @@ public class UIManager {
         });
 
 
-        left_arrow.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                if (!(event instanceof InputEvent) ||
-                        !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
-                    return false;
-                city.getCameraPosition().getCamera().rotateAround(new Vector3(0f, 0f, 0f),
-                        new Vector3(0f, 1f, 0f), 1f);
-                return true;
-            }
-        });
-
-        right_arrow.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                if (!(event instanceof InputEvent) ||
-                        !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
-                    return false;
-                city.getCameraPosition().getCamera().rotateAround(new Vector3(0f, 0f, 0f),
-                        new Vector3(0f, 1f, 0f), -1f);
-                return true;
-            }
-        });
-
-        up_arrow.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                if (!(event instanceof InputEvent) ||
-                        !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
-                    return false;
-                city.getCameraPosition().getCamera().translate(-10f, 0, 0);
-                return true;
-            }
-        });
 
 
         stage.addActor(table);

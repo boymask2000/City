@@ -8,10 +8,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class BaseScreen implements Screen, InputProcessor {
     public Stage3D getMainStage3D() {
         return mainStage3D;
     }
+
+    private List<Stage> moreStages = new ArrayList<>();
 
     protected Stage3D mainStage3D;
     protected Stage uiStage;
@@ -36,6 +41,7 @@ public abstract class BaseScreen implements Screen, InputProcessor {
         dt = Math.min(dt, 1 / 30f);
 // act methods
         uiStage.act(dt);
+        for (Stage st : moreStages) st.act(dt);
         mainStage3D.act(dt);
         update(dt);
 // render
@@ -43,7 +49,12 @@ public abstract class BaseScreen implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT + GL20.GL_DEPTH_BUFFER_BIT);
 // draw the graphics
         mainStage3D.draw();
+        for (Stage st : moreStages) st.draw();
         uiStage.draw();
+    }
+
+    public void addStage(Stage st) {
+        moreStages.add(st);
     }
 
     // methods required by Screen interface

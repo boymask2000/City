@@ -4,18 +4,22 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.boymask.city.City;
+import com.boymask.city.core.City3DGame;
+import com.boymask.city.core.LevelScreen;
 import com.boymask.city.core.StarfishCollector3DGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-/*		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+
+
+		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 
 		cfg.height = 1000;
 		cfg.width = 1200;
-		new LwjglApplication(new City(), cfg);*/
+		new LwjglApplication(new City3DGame(), cfg);
 
-		Game myGame = new StarfishCollector3DGame();
+		/*Game myGame = new StarfishCollector3DGame();
 		LwjglApplication launcher = new LwjglApplication(
-				myGame, "Starfish Collector 3D", 800, 600 );
+				myGame, "Starfish Collector 3D", 800, 600 );*/
 	}
 }

@@ -23,7 +23,7 @@ public class Albero extends MovingObject {
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
         ModelInstance mmm = new ModelInstance(box, x,y,z);
         Albero r = new Albero(x,y,z, city,mmm );
-        City.theCity.addMovingObject(r);
+
         return r;
     }
 

@@ -60,6 +60,12 @@ public abstract class Edificio extends ObjModel {
         loadAllModels();
     }
 
+    @Override
+    public void act(float dt) {
+        super.act(dt);
+
+    }
+
     //***************************************************************************************************
     public abstract void produci();
 
@@ -89,6 +95,8 @@ public abstract class Edificio extends ObjModel {
 
 
         allEdifici.addEdificio(getIdEdificio(), this);
+
+        produci();
     }
 
 

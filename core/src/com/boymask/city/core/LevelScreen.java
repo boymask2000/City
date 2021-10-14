@@ -23,8 +23,9 @@ public class LevelScreen extends BaseScreen {
         skydome.setScale(500, 500, -500);
         turtle = new Turtle(0, 0, 15, mainStage3D);
         turtle.setTurnAngle(90);
-        new Pozzo(15, 1, 0, mainStage3D, this);
-        new Pozzo(0, 1, 0, mainStage3D, this);
+        Pozzo p1 = new Pozzo(15, 1, 0, mainStage3D, this);
+        Pozzo p2 = new Pozzo(0, 1, 0, mainStage3D, this);
+
  /*
         new Rock(-15, 1, 0, mainStage3D);
 

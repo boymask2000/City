@@ -36,6 +36,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.boymask.city.core.BaseGame;
 import com.boymask.city.core.Box;
+import com.boymask.city.core.LevelScreen;
 import com.boymask.city.core.Stage3D;
 import com.boymask.city.edifici.Boscaiolo;
 import com.boymask.city.edifici.Edificio;
@@ -59,122 +60,35 @@ import java.util.List;
 
 import javax.sound.midi.SysexMessage;
 
-public class City extends BaseGame implements InputProcessor {
-public static City theCity;
-    private CameraPosition cameraPosition;
-    private ModelBatch modelBatch;
-    private ModelBuilder modelBuilder;
+public class City extends LevelScreen implements InputProcessor {
+    public static City theCity;
 
-    public Model getBox() {
-        return box;
-    }
-
-    private Model box;
-
-    private ModelInstance modelInstance;
-    private ModelInstance house;
-    private ModelInstance modelInstance2;
     private Environment environment;
-
-    private List<MovingObject> objs = new ArrayList<>();
     private UIManager uiManager;
-    private InputMultiplexer multiplexer = new InputMultiplexer();
-
-
-    private ReteStradale reteStradale;
-    private boolean hades;
-    private ModelInstance tree;
-    private Model treeModel;
-    private CameraInputController cameraController;
-    private PerspectiveCamera camera;
-    private ModelInstance instance;
-
 
     private TipoEdificio edificioInCostruzione = null;
 
-
     private OrderManager orderManager = new OrderManager();
-    private List<ModelInstance> act = new ArrayList<>();
 
     private InventarioGlobale inventarioGlobale = new InventarioGlobale();
-    private Stage3D stage3d ;
+
+
+
     @Override
-    public void create() {
-        super.create();
+    public void initialize() {
+        super.initialize();
+        theCity = this;
 
-        Stage3D stage3d = new Stage3D();
-
-        Box box = new Box(10,10,10,stage3d );
-
-        stage3d.act(1);
-        stage3d.draw();
-    }
-
-    public void createold() {
-        theCity=this;
-        cameraPosition = new CameraPosition();
         uiManager = new UIManager(this);
         Stage input = uiManager.createAll();
-        multiplexer.addProcessor(input);
 
-        modelBatch = new ModelBatch();
-        modelBuilder = new ModelBuilder();
-        box = modelBuilder.createBox(2f, 2f, 2f,
-                new Material(ColorAttribute.createDiffuse(Color.BLUE)),
-                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-
-
-        modelInstance = new ModelInstance(box, 0, 0, 0);
-        modelInstance2 = new ModelInstance(box, 3, 0, 0);
-        //       MovingObject mo = new MovingObject(this,modelInstance);
-        //    MovingObject mo2 = new MovingObject(this, modelInstance2);
-//mo2.setMovement(new Vector3(10,10,10));
-//mo2.moveTo(new Vector3(10,10,10));
-        //    objs.add(mo);
-        //  objs.add(mo2);
-
-        //mo.moveTo(new Vector3(5, 5, 3));
-        environment = createEnvironment();
-
-
-        float intensity = 100f;
-
-
+        InputMultiplexer multiplexer = (InputMultiplexer) Gdx.input.getInputProcessor();
         multiplexer.addProcessor(this);
-
-
-        Gdx.input.setInputProcessor(multiplexer);
-        reteStradale = new ReteStradale(this, modelBuilder);
-
-        String fileName = "edifici/house_type10.g3db";
-        UBJsonReader jsonReader = new UBJsonReader();
-        G3dModelLoader loader = new G3dModelLoader(jsonReader);
-
-
-  //      showTree("edifici/obj/house_type01.obj", 0, 5);
-
-   //     house = loadModelInstance("edifici/house_type06.g3dj", 5, 5, 0);
-
-
-
-    /*    Fornaio f = new Fornaio(this, 10, 10);
-
-        f.produci();
-        Pozzo p = new Pozzo(this, 10, 20);
-        p.produci();
-*/
-
-     //   house.transform.scale(5f, 5, 5f);
-
-       /* ModelInstance mmm = new ModelInstance(box, 10, 20, 30);
-        Carrier r = new Carrier(10,10,10,this, mmm);
-        objs.add(r);
-        r.workCycle();*/
-
+        multiplexer.addProcessor(input);
+addStage(input);
+      //  getMainStage3D().addActor(input);
     }
-public void addMovingObject( MovingObject m){
-        objs.add(m);
-}
+
     private Environment createEnvironment() {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 0.8f, 0.8f, 1f));
@@ -189,16 +103,7 @@ public void addMovingObject( MovingObject m){
         return environment;
     }
 
-    private void showTree(String fileName, int x, int y) {
-        //FileHandle stream = Gdx.files.getFileHandle("edifici/tree_large.obj", Files.FileType.Internal);
-        FileHandle stream = Gdx.files.getFileHandle(fileName, Files.FileType.Internal);
-        ObjLoader d = new ObjLoader();
-        Model treeModel = d.loadModel(stream, true);
 
-        ModelInstance mi = new ModelInstance(treeModel, x, y, 5);
-        mi.transform.scale(5f, 5, 5f);
-        act.add(mi);
-    }
 
     private Model loadModel(String fileName) {
         AssetManager am = new AssetManager();
@@ -216,7 +121,6 @@ public void addMovingObject( MovingObject m){
     }
 
 
-
     public void renderold() {
 
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -225,32 +129,12 @@ public void addMovingObject( MovingObject m){
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 
-        Camera camera = cameraPosition.getCamera();
-        camera.update();
-        modelBatch.begin(camera);
 
-        for (MovingObject i : objs) {
-            modelBatch.render(i.getModelInstance(), environment);
-            i.move();
-        }
 
-     /*   for( Edificio ed: Edificio.getAllEdifici().getListaEdifici())
-        {
-            ed.produci();
-        }*/
-        Boscaiolo b = new Boscaiolo(this, 10,14,16);
-        b.produci();
 
-        modelBatch.render(act);
-
-        modelBatch.render(Edificio.getIstanceEdifici());
-
-        line();
-        uiManager.render();
-        modelBatch.end();
     }
 
-    private void line() {
+  /*  private void line() {
         ShapeRenderer shapeDebugger = new ShapeRenderer();
         Gdx.gl.glLineWidth(2);
         shapeDebugger.setProjectionMatrix(cameraPosition.getCamera().combined);
@@ -258,58 +142,28 @@ public void addMovingObject( MovingObject m){
         shapeDebugger.setColor(Color.RED);
         shapeDebugger.line(Gdx.graphics.getWidth() / 2, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
         shapeDebugger.end();
-    }
+    }*/
 
-    @Override
-    public void dispose() {
-    }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        Camera camera = cameraPosition.getCamera();
-        if (keycode == Input.Keys.LEFT)
-            camera.rotateAround(new Vector3(0f, 0f, 0f),
-                    new Vector3(0f, 1f, 0f), 1f);
-        if (keycode == Input.Keys.RIGHT)
-            camera.rotateAround(new Vector3(0f, 0f, 0f),
-                    new Vector3(0f, 1f, 0f), -1f);
 
-        if (keycode == Input.Keys.UP)
-            camera.translate(-0.1f, 0, 0);
-        if (keycode == Input.Keys.DOWN)
-            camera.translate(0.1f, 0, 0);
 
-        return true;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    public Edificio getEdificioAtMouse( int screenX, int screenY) {
-        Vector3 pos=fromScreenTo3d(  screenX,  screenY);
-        float minDist=10000;
-        Edificio best=null;
-        for( Edificio ed: Edificio.getAllEdifici().getListaEdifici())
-        {
+    /*public Edificio getEdificioAtMouse(int screenX, int screenY) {
+        Vector3 pos = fromScreenTo3d(screenX, screenY);
+        float minDist = 10000;
+        Edificio best = null;
+        for (Edificio ed : Edificio.getAllEdifici().getListaEdifici()) {
             float dist = ed.getPosition().dst(pos);
-            if(dist<minDist){
-                minDist=dist;
-                best=ed;
+            if (dist < minDist) {
+                minDist = dist;
+                best = ed;
             }
         }
-        if(minDist<0.5)
-        return best;
+        if (minDist < 0.5)
+            return best;
         return null;
-    }
+    }*/
 
-    public Vector3 fromScreenTo3d( int screenX, int screenY){
+ /*   public Vector3 fromScreenTo3d(int screenX, int screenY) {
         Vector3 tmpVector = new Vector3();
         Ray ray = cameraPosition.getCamera().getPickRay(screenX, screenY);
         final float distance = -ray.origin.y / ray.direction.y;
@@ -325,41 +179,28 @@ public void addMovingObject( MovingObject m){
         tmpVector.z *= DELTA;
         return tmpVector;
     }
+*/
 
 
-
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return true;
-    }
-
-    @Override
-    public boolean touchDragged(int x, int y, int pointer) {
-
-        if (reteStradale.isRoadBuilding())
-            reteStradale.addElement(x, y);
-        return true;
-    }
 
     private MovingObject prev = null;
 
-    @Override
+/*    @Override
     public boolean mouseMoved(int x, int y) {
 
-        Edificio ed = getEdificioAtMouse(x,y);
-        if(ed!=null)uiManager.getTableDescrEdificio().show(ed);
+        Edificio ed = getEdificioAtMouse(x, y);
+        if (ed != null) uiManager.getTableDescrEdificio().show(ed);
 
         if (prev != null)
             objs.remove(prev);
 
         return true;
-    }
+    }*/
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
         if (edificioInCostruzione != null) {
-            System.out.println("Creazione edificio "+edificioInCostruzione);
+            System.out.println("Creazione edificio " + edificioInCostruzione);
 
 
             edificioInCostruzione = null;
@@ -373,13 +214,6 @@ public void addMovingObject( MovingObject m){
         return false;
     }
 
-    public ReteStradale getReteStradale() {
-        return reteStradale;
-    }
-
-    public CameraPosition getCameraPosition() {
-        return cameraPosition;
-    }
 
     public OrderManager getOrderManager() {
         return orderManager;
@@ -390,9 +224,9 @@ public void addMovingObject( MovingObject m){
     }
 
     public void setEdificioInCostruzione(TipoEdificio ed) {
-        if( this.edificioInCostruzione!=null)return;
+        if (this.edificioInCostruzione != null) return;
         this.edificioInCostruzione = ed;
-        System.out.println("Set EDIFiCIO "+ed);
+        System.out.println("Set EDIFiCIO " + ed);
     }
 
 }

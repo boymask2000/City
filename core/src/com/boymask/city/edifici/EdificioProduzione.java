@@ -20,34 +20,32 @@ public class EdificioProduzione extends Edificio {
     private Merce tipoMerceProdotte = null;
 
     public EdificioProduzione(TipoEdificio tipo, LevelScreen city, Merce tipoMerceProdotte, int x, int y, int z) {
-        super(tipo, city, x, y,z);
+        super(tipo, city, x, y, z);
         this.tipoMerceProdotte = tipoMerceProdotte;
         merciInUscita = new VoceInventario(tipoMerceProdotte.getTipo());
     }
-
 
 
     @Override
     public void produci() {
         Thread t = new Thread() {
             public void run() {
-                while (true)
-                {
+                while (true) {
                     try {
                         if (tipoMerceProdotte == null) {
-                            System.out.println( tipoEdificio +" tipo merce non spacificata");
+                            System.out.println(tipoEdificio + " tipo merce non spacificata");
                             sleep(5000);
                             continue;
                         } // Non è stata specificata la merce da produrre
 
-                        if (merciInUscita.getGiacenza() >= maxInventario) {
-                            System.out.println( tipoEdificio +" max inventario");
+                        if (merciInUscita != null && merciInUscita.getGiacenza() >= maxInventario) {
+                            System.out.println(tipoEdificio + " max inventario");
                             sleep(5000);
                             continue;
                         }
 
                         if (!checkMateriePrime()) {
-                            System.out.println( tipoEdificio +" no materie prime");
+                            System.out.println(tipoEdificio + " no materie prime");
                             creaOrdini();
                             sleep(5000);
                             continue;
@@ -76,7 +74,7 @@ public class EdificioProduzione extends Edificio {
 
     private void aggiornaInventarioGlobale(TipoMerce tipoMerce) {
         MerceDisponibile md = new MerceDisponibile(getIdEdificio(), tipoMerce);
-     //   getCity().getInventarioGlobale().addMerce(md);
+        //   getCity().getInventarioGlobale().addMerce(md);
     }
 
     private void creaOrdini() {
@@ -84,10 +82,10 @@ public class EdificioProduzione extends Edificio {
         for (VoceInventario v : matPrime.getMerci()) {
             int need = inventario.getGiacenza(v.getTipo()) + //
                     ordiniFatti.getGiacenza(v.getTipo())
-                    - getGiacenza()-5;
+                    - getGiacenza() - 5;
             while (need < 0) {
                 Order order = new Order(getIdEdificio(), v.getTipo());
-          //      getCity().getOrderManager().putOrder(order);
+                //      getCity().getOrderManager().putOrder(order);
                 ordiniFatti.addMerce(v.getTipo(), 1);
                 need++;
             }
@@ -121,6 +119,7 @@ public class EdificioProduzione extends Edificio {
         }
         return true;
     }
+
     public VoceInventario getMerciInUscita() {
         return merciInUscita;
     }

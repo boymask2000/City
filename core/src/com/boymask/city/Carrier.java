@@ -45,7 +45,7 @@ public class Carrier extends MovingObject {
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
         ModelInstance mmm = new ModelInstance(box, 10, 20, 30);
         Carrier r = new Carrier(x,y,z, lvl,mmm );
-        City.theCity.addMovingObject(r);
+
         r.workCycle();
         return r;
     }
