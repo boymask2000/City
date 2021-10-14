@@ -23,10 +23,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.boymask.city.edifici.Edificio;
 import com.boymask.city.edifici.TipoEdificio;
 import com.boymask.city.ui.TableDescrEdificio;
+
+import java.awt.event.MouseEvent;
 
 public class UIManager {
 
@@ -69,16 +72,15 @@ public class UIManager {
         stage.addActor(tableDescrEdificio);
 
         Table table = new Table();
-        //  table.setFillParent(true);
-        table.setPosition(100, Gdx.graphics.getHeight() - 100);
+         table.setFillParent(true);
+     table.top();table.left();
+      //  table.setPosition(100, Gdx.graphics.getHeight() - 100);
 
 
         ImageButton castle = buildImageButton("bottoni/castle100.png");
    //     ImageButton mulino0 = buildImageButton("bottoni/windmill80.png");
         ImageButton road = buildImageButton("bottoni/horizon-road80.png");
-        ImageButton left_arrow = buildImageButton("bottoni/left-arrow50.png");
-        ImageButton up_arrow = buildImageButton("bottoni/up-arrow50.png");
-        ImageButton right_arrow = buildImageButton("bottoni/right-arrow50.png");
+
         final ImageButton carrier = buildImageButton("bottoni/hades-symbol50.png");
         TextButton pozzo = createTextButton("Pozzo");
         TextButton castello = createTextButton("Castello");
@@ -89,11 +91,6 @@ public class UIManager {
 
         table.add(castle);
 
-        table.row();
-
-        table.add(left_arrow);
-        table.add(up_arrow);
-        table.add(right_arrow);
         table.row();
         table.add(pozzo); table.row();
         table.add(fornaio); table.row();
@@ -110,10 +107,10 @@ public class UIManager {
         setButtonListener(fornaio,TipoEdificio.FORNAIO);
         setButtonListener(pozzo,TipoEdificio.POZZO);
 
-
-
         stage.addActor(tableDescrEdificio);
 
+        InputMultiplexer im = (InputMultiplexer) Gdx.input.getInputProcessor();
+        im.addProcessor(stage);
 
         castle.addListener(new EventListener() {
             @Override
@@ -121,12 +118,9 @@ public class UIManager {
                 if (!(event instanceof InputEvent) ||
                         !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
                     return false;
-
                 return true;
             }
         });
-
-
 
         carrier.addListener(new EventListener() {
             @Override
@@ -134,34 +128,22 @@ public class UIManager {
                 if (!(event instanceof InputEvent) ||
                         !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
                     return false;
-
-
                 return true;
             }
         });
 
-
-
-
         stage.addActor(table);
-
-
     }
 
     private void setButtonListener(TextButton b, final TipoEdificio te) {
-        b.addListener(new ChangeListener() {
+        b.addListener( new ClickListener() {
             @Override
-            public boolean handle(Event event) {
-                if (!(event instanceof InputEvent) ||
-                        !((InputEvent) event).getType().equals(InputEvent.Type.touchDown))
-                    return false;
-
+            public void clicked(InputEvent event, float x, float y) {
                 city.setEdificioInCostruzione(te);
-                return true;
+                System.out.println("In costruzione: "+te);
+
             }
-            public void changed(ChangeEvent event, Actor actor) {
-            }
-        });
+        } );
     }
 
     private ImageButton buildImageButton(String fileName) {

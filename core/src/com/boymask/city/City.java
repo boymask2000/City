@@ -224,7 +224,7 @@ addStage(input);
     }
 
     public void setEdificioInCostruzione(TipoEdificio ed) {
-        if (this.edificioInCostruzione != null) return;
+      //  if (this.edificioInCostruzione != null) return;
         this.edificioInCostruzione = ed;
         System.out.println("Set EDIFiCIO " + ed);
     }
