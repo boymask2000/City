@@ -1,5 +1,6 @@
 package com.boymask.city;
 
+import com.boymask.city.core.Mover;
 import com.boymask.city.core.ObjModel;
 import com.boymask.city.edifici.Edificio;
 import com.boymask.city.infrastructure.MerceDisponibile;
@@ -13,7 +14,7 @@ import com.boymask.city.merci.TipoMerce;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Carrier extends ObjModel {
+public class Carrier extends Mover {
 
     private final OrderManager orderManager;
     private final City city;
@@ -81,8 +82,9 @@ public class Carrier extends ObjModel {
             return;
         }
         System.out.println("Cerrier trovato fornitore : " + srcEdificio);
-        setAcceleration(0);
+        setAcceleration(1);
         setSpeed(5);
+        accelerateAtAngle(10);
 
 
 

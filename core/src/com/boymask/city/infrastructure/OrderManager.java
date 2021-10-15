@@ -15,6 +15,9 @@ public class OrderManager {
     }
 
     public synchronized Order getNextOrder() {
+        for( Order ord: ordini)
+            System.out.println("Ordini: "+ord);
+
         if (ordini.size() == 0) return null;
         Order ord = ordini.get(0);
         ordini.remove(0);

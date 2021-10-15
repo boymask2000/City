@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.MathUtils;
 
-public class BaseActor3D extends Mover{
+public class BaseActor3D {
     private ModelInstance modelData;
     private final Vector3 position;
     private final Quaternion rotation;
@@ -32,9 +32,7 @@ public class BaseActor3D extends Mover{
 
     public BaseActor3D(float x, float y, float z, Stage3D s)
     {
-        setAcceleration(400);
-        setMaxSpeed(100);
-        setDeceleration(400);
+
 
         modelData = null;
         position = new Vector3(x,y,z);
@@ -65,8 +63,6 @@ public class BaseActor3D extends Mover{
     }
 
     public void act(float dt) {
-
-        applyPhysics(dt);
         modelData.transform.set(calculateTransform());
     }
 
@@ -91,6 +87,9 @@ public class BaseActor3D extends Mover{
     }
 
     public void moveBy(float x, float y, float z) {
+
+
+
         moveBy(new Vector3(x, y, z));
     }
 
