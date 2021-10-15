@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.boymask.city.core.LevelScreen;
+import com.boymask.city.core.ObjModel;
 import com.boymask.city.edifici.Edificio;
 import com.boymask.city.infrastructure.AllEdifici;
 import com.boymask.city.infrastructure.InventarioGlobale;
@@ -23,28 +24,25 @@ import com.boymask.city.merci.TipoMerce;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Carrier extends MovingObject {
+public class Carrier extends ObjModel {
 
-
- //   private final OrderManager ordermanager;
+    private final OrderManager orderManager;
     private TipoMerce carico = null;
- //   private final InventarioGlobale inventarioGlobale;
-    private Job job;
 
-    public Carrier(int x, int y, int z, LevelScreen city, ModelInstance modelInstance) {
-        super(x,y,z, city, modelInstance);
-   //     this.inventarioGlobale = city.getInventarioGlobale();
-    //    this.ordermanager = city.getOrderManager();
-
+    public Carrier(int x, int y, int z, City city) {
+        super(x,y,z, city.getMainStage3D());
+       // loadObjModel(modelInstance);
+        loadObjModel("edifici/obj/fence_wide.obj");
+        this.orderManager=city.getOrderManager();
     }
 
-    public static Carrier create(int x, int y, int z, LevelScreen lvl){
-        ModelBuilder modelBuilder = new ModelBuilder();
+    public static Carrier create(int x, int y, int z, City lvl){
+  /*      ModelBuilder modelBuilder = new ModelBuilder();
         Model box = modelBuilder.createBox(2f, 2f, 2f,
                 new Material(ColorAttribute.createDiffuse(Color.BLUE)),
-                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-        ModelInstance mmm = new ModelInstance(box, 10, 20, 30);
-        Carrier r = new Carrier(x,y,z, lvl,mmm );
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);*/
+
+        Carrier r = new Carrier(x,y,z, lvl);
 
         r.workCycle();
         return r;
@@ -76,15 +74,10 @@ public class Carrier extends MovingObject {
     }
 
     public void workByOrder() {
-        /*
-        if (isWorking()) {
-            setWorking(!job.isJobCompleted());
-            return;
-        }
+
         System.out.println("WORK ");
-        Order order = ordermanager.getNextOrder();
-if( order!=null)
-    System.out.println("");
+        Order order = orderManager.getNextOrder();
+
 
         if (order == null) {
             System.out.println("non trovato ");
@@ -97,7 +90,7 @@ if( order!=null)
 
         //setTarget(srcEdificio.getPosition());
         if (srcEdificio == null) {
-            ordermanager.putOrder(order);
+            orderManager.putOrder(order);
             setWorking(false);
             return;
         }
@@ -105,21 +98,15 @@ if( order!=null)
         Edificio trgEdificio = Edificio.getEdificioById(order.getIdEdificio());
         
         MerceDisponibile md = new MerceDisponibile(trgEdificio.getIdEdificio(), order.getTipoMerce());
-        job = createJob(srcEdificio, trgEdificio, md);
+    //    job = createJob(srcEdificio, trgEdificio, md);
         setWorking(true);
 
-         */
+
         return;
     }
 
 
 
-    @Override
-    public synchronized void notifyJobCompleted() {
-
-        setWorking(false);
-        System.out.println("notifyJobCompleted working: " + working);
-    }
 
 
     private Job createJob(Edificio srcEdificio, Edificio trgEdificio, MerceDisponibile m) {
@@ -141,10 +128,10 @@ if( order!=null)
         tasks.add(jt3);
         tasks.add(jt4);
 
-        Job job = new Job(this, tasks, false);
+     //   Job job = new Job(this, tasks, false);
 
-        setJob(job);
-        return job;
+
+        return null;
 
     }
 

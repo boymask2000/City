@@ -7,7 +7,7 @@ import com.boymask.city.merci.Merce_Acqua;
 import com.boymask.city.merci.Merce_Grano;
 
 public class CampoDiGrano extends EdificioProduzione {
-    public CampoDiGrano(int x, int y, int z, Stage3D st, LevelScreen lvl) {
+    public CampoDiGrano(int x, int y, int z, Stage3D st, City lvl) {
         super(TipoEdificio.CAMPO_GRANO, lvl,  new Merce_Acqua(),x, y,z);
     }
 

@@ -7,7 +7,7 @@ import com.boymask.city.merci.Merce_Acqua;
 import com.boymask.city.merci.Merce_Farina;
 
 public class Mulino extends EdificioProduzione{
-    public Mulino(int x, int y, int z, Stage3D st, LevelScreen lvl) { //
+    public Mulino(int x, int y, int z, Stage3D st, City lvl) { //
         super(TipoEdificio.MULINO,  lvl,  new Merce_Farina(),x, y,z);
     }
 }

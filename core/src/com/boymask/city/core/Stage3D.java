@@ -13,6 +13,11 @@ import java.util.ArrayList;
 
 public class Stage3D {
     private Environment environment;
+
+    public PerspectiveCamera getCamera() {
+        return camera;
+    }
+
     private PerspectiveCamera camera;
     private final ModelBatch modelBatch;
     private ArrayList<BaseActor3D> actorList;

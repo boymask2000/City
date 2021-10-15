@@ -19,7 +19,7 @@ public class EdificioProduzione extends Edificio {
     private VoceInventario merciInUscita;
     private Merce tipoMerceProdotte = null;
 
-    public EdificioProduzione(TipoEdificio tipo, LevelScreen city, Merce tipoMerceProdotte, int x, int y, int z) {
+    public EdificioProduzione(TipoEdificio tipo, City city, Merce tipoMerceProdotte, int x, int y, int z) {
         super(tipo, city, x, y, z);
         this.tipoMerceProdotte = tipoMerceProdotte;
         merciInUscita = new VoceInventario(tipoMerceProdotte.getTipo());
@@ -85,7 +85,7 @@ public class EdificioProduzione extends Edificio {
                     - getGiacenza() - 5;
             while (need < 0) {
                 Order order = new Order(getIdEdificio(), v.getTipo());
-                //      getCity().getOrderManager().putOrder(order);
+                city.getOrderManager().putOrder(order);
                 ordiniFatti.addMerce(v.getTipo(), 1);
                 need++;
             }

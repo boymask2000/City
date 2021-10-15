@@ -7,7 +7,7 @@ import com.boymask.city.merci.Merce_Acqua;
 import com.boymask.city.merci.Merce_Pane;
 
 public class Pozzo extends EdificioProduzione{
-    public Pozzo(int x, int y, int z, Stage3D st, LevelScreen lvl) { //
+    public Pozzo(int x, int y, int z, Stage3D st, City lvl) { //
         super(TipoEdificio.POZZO,  lvl,  new Merce_Acqua(),x, y,z);
 
     }

@@ -22,6 +22,7 @@ public abstract class Edificio extends ObjModel {
 
     private static int CURRID = 0;
     protected final TipoEdificio tipoEdificio;
+    protected final City city;
     private int idEdificio;
     public static AllEdifici allEdifici = new AllEdifici();
     private final static List<Edificio> elencoEdifici = new ArrayList<>();
@@ -76,8 +77,10 @@ public abstract class Edificio extends ObjModel {
         return CURRID;
     }
 
-    public Edificio(TipoEdificio tipo, LevelScreen city, int x, int y, int z) {
+    public Edificio(TipoEdificio tipo, City city, int x, int y, int z) {
         super(x, y, z, city.getMainStage3D());
+
+        this.city=city;
         Model model = AllEdifici.getModelloEdificio(tipo);
         ModelInstance modelInstance = new ModelInstance(model, x, y, z);
 

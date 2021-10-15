@@ -41,6 +41,7 @@ import com.boymask.city.core.Stage3D;
 import com.boymask.city.edifici.Boscaiolo;
 import com.boymask.city.edifici.Edificio;
 import com.boymask.city.edifici.Fornaio;
+import com.boymask.city.edifici.Mulino;
 import com.boymask.city.edifici.Pozzo;
 import com.boymask.city.edifici.TipoEdificio;
 import com.boymask.city.infrastructure.AllEdifici;
@@ -73,7 +74,6 @@ public class City extends LevelScreen implements InputProcessor {
     private InventarioGlobale inventarioGlobale = new InventarioGlobale();
 
 
-
     @Override
     public void initialize() {
         super.initialize();
@@ -85,8 +85,8 @@ public class City extends LevelScreen implements InputProcessor {
         InputMultiplexer multiplexer = (InputMultiplexer) Gdx.input.getInputProcessor();
         multiplexer.addProcessor(this);
         multiplexer.addProcessor(input);
-addStage(input);
-      //  getMainStage3D().addActor(input);
+        addStage(input);
+        //  getMainStage3D().addActor(input);
     }
 
     private Environment createEnvironment() {
@@ -104,7 +104,6 @@ addStage(input);
     }
 
 
-
     private Model loadModel(String fileName) {
         AssetManager am = new AssetManager();
         am.load(fileName, Model.class);
@@ -120,20 +119,6 @@ addStage(input);
         return new ModelInstance(model, x, y, z);
     }
 
-
-    public void renderold() {
-
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
-
-
-
-
-    }
-
   /*  private void line() {
         ShapeRenderer shapeDebugger = new ShapeRenderer();
         Gdx.gl.glLineWidth(2);
@@ -147,7 +132,7 @@ addStage(input);
 
 
 
-    /*public Edificio getEdificioAtMouse(int screenX, int screenY) {
+    public Edificio getEdificioAtMouse(int screenX, int screenY) {
         Vector3 pos = fromScreenTo3d(screenX, screenY);
         float minDist = 10000;
         Edificio best = null;
@@ -161,11 +146,11 @@ addStage(input);
         if (minDist < 0.5)
             return best;
         return null;
-    }*/
+    }
 
- /*   public Vector3 fromScreenTo3d(int screenX, int screenY) {
+    public Vector3 fromScreenTo3d(int screenX, int screenY) {
         Vector3 tmpVector = new Vector3();
-        Ray ray = cameraPosition.getCamera().getPickRay(screenX, screenY);
+        Ray ray = getMainStage3D().getCamera().getPickRay(screenX, screenY);
         final float distance = -ray.origin.y / ray.direction.y;
         tmpVector.set(ray.direction).scl(distance).add(ray.origin);
         //     modelInstance.transform.setTranslation(tmpVector);
@@ -179,33 +164,46 @@ addStage(input);
         tmpVector.z *= DELTA;
         return tmpVector;
     }
-*/
 
 
+  //  private MovingObject prev = null;
 
-    private MovingObject prev = null;
-
-/*    @Override
+    @Override
     public boolean mouseMoved(int x, int y) {
 
         Edificio ed = getEdificioAtMouse(x, y);
         if (ed != null) uiManager.getTableDescrEdificio().show(ed);
 
-        if (prev != null)
-            objs.remove(prev);
+    /*    if (prev != null)
+            objs.remove(prev);*/
 
         return true;
-    }*/
+    }
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
-        if (edificioInCostruzione != null) {
-            System.out.println("Creazione edificio " + edificioInCostruzione);
+        if (edificioInCostruzione == null) return false;
 
+        System.out.println("Creazione edificio " + edificioInCostruzione);
 
-            edificioInCostruzione = null;
+        Vector3 pos = fromScreenTo3d(x, y);
+        int px = (int) pos.x;
+        int py = (int) pos.y;
+        int pz = (int) pos.z;
+
+        switch (edificioInCostruzione) {
+            case POZZO:
+                new Pozzo(px, py, pz, mainStage3D, this);
+                break;
+            case MULINO:
+                new Mulino(px, py, pz, mainStage3D, this);
+                break;
+            case FORNAIO:
+                new Fornaio(px, py, pz, mainStage3D, this);
+                break;
         }
 
+        edificioInCostruzione = null;
         return true;
     }
 
@@ -224,7 +222,7 @@ addStage(input);
     }
 
     public void setEdificioInCostruzione(TipoEdificio ed) {
-      //  if (this.edificioInCostruzione != null) return;
+        //  if (this.edificioInCostruzione != null) return;
         this.edificioInCostruzione = ed;
         System.out.println("Set EDIFiCIO " + ed);
     }
