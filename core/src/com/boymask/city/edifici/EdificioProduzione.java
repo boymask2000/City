@@ -74,7 +74,7 @@ public class EdificioProduzione extends Edificio {
 
     private void aggiornaInventarioGlobale(TipoMerce tipoMerce) {
         MerceDisponibile md = new MerceDisponibile(getIdEdificio(), tipoMerce);
-        //   getCity().getInventarioGlobale().addMerce(md);
+        city.getInventarioGlobale().addMerce(md);
     }
 
     private void creaOrdini() {

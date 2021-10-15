@@ -1,24 +1,13 @@
 package com.boymask.city;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.graphics.g3d.Material;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.boymask.city.core.LevelScreen;
 import com.boymask.city.core.ObjModel;
 import com.boymask.city.edifici.Edificio;
-import com.boymask.city.infrastructure.AllEdifici;
-import com.boymask.city.infrastructure.InventarioGlobale;
 import com.boymask.city.infrastructure.MerceDisponibile;
 import com.boymask.city.infrastructure.Order;
 import com.boymask.city.infrastructure.OrderManager;
 import com.boymask.city.job.Job;
 import com.boymask.city.job.JobTask;
 import com.boymask.city.job.TaskOperation;
-import com.boymask.city.merci.Merce;
 import com.boymask.city.merci.TipoMerce;
 
 import java.util.ArrayList;
@@ -27,27 +16,24 @@ import java.util.List;
 public class Carrier extends ObjModel {
 
     private final OrderManager orderManager;
+    private final City city;
     private TipoMerce carico = null;
 
     public Carrier(int x, int y, int z, City city) {
-        super(x,y,z, city.getMainStage3D());
-       // loadObjModel(modelInstance);
+        super(x, y, z, city.getMainStage3D());
+        this.city=city;
+
         loadObjModel("edifici/obj/fence_wide.obj");
-        this.orderManager=city.getOrderManager();
+        this.orderManager = city.getOrderManager();
     }
 
-    public static Carrier create(int x, int y, int z, City lvl){
-  /*      ModelBuilder modelBuilder = new ModelBuilder();
-        Model box = modelBuilder.createBox(2f, 2f, 2f,
-                new Material(ColorAttribute.createDiffuse(Color.BLUE)),
-                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);*/
+    public static Carrier create(int x, int y, int z, City lvl) {
 
-        Carrier r = new Carrier(x,y,z, lvl);
+        Carrier r = new Carrier(x, y, z, lvl);
 
         r.workCycle();
         return r;
     }
-
 
     private boolean working = false;
 
@@ -66,7 +52,6 @@ public class Carrier extends ObjModel {
                 }
             }
         }.start();
-
     }
 
     public void work() {
@@ -84,29 +69,30 @@ public class Carrier extends ObjModel {
             setWorking(false);
             return;
         }
-        System.out.println("Cerrier trovato ordine : "+order);
+        System.out.println("Cerrier trovato ordine : " + order);
 
         Edificio srcEdificio = searchFornitore(order.getTipoMerce());
 
         //setTarget(srcEdificio.getPosition());
         if (srcEdificio == null) {
+            System.out.println("Non trovato fornitore  per "+order.getTipoMerce() );
             orderManager.putOrder(order);
             setWorking(false);
             return;
         }
-        System.out.println("Cerrier trovato fornitore : "+srcEdificio);
+        System.out.println("Cerrier trovato fornitore : " + srcEdificio);
+        moveBy(srcEdificio.getPosition());
+
+
         Edificio trgEdificio = Edificio.getEdificioById(order.getIdEdificio());
-        
+
         MerceDisponibile md = new MerceDisponibile(trgEdificio.getIdEdificio(), order.getTipoMerce());
-    //    job = createJob(srcEdificio, trgEdificio, md);
+        //    job = createJob(srcEdificio, trgEdificio, md);
         setWorking(true);
 
 
         return;
     }
-
-
-
 
 
     private Job createJob(Edificio srcEdificio, Edificio trgEdificio, MerceDisponibile m) {
@@ -128,7 +114,7 @@ public class Carrier extends ObjModel {
         tasks.add(jt3);
         tasks.add(jt4);
 
-     //   Job job = new Job(this, tasks, false);
+        //   Job job = new Job(this, tasks, false);
 
 
         return null;
@@ -145,14 +131,14 @@ public class Carrier extends ObjModel {
 
 
     private Edificio searchFornitore(TipoMerce tipoMerce) {
-/*
-        MerceDisponibile md = inventarioGlobale.getMerce(tipoMerce);
+
+        MerceDisponibile md =city.getInventarioGlobale().getMerce(tipoMerce);
         if (md != null) {
             Edificio ed = Edificio.getEdificioById(md.getIdEdificio());
             return ed;
         }
 
- */
+
         return null;
     }
 
