@@ -81,7 +81,9 @@ public class Carrier extends ObjModel {
             return;
         }
         System.out.println("Cerrier trovato fornitore : " + srcEdificio);
-        moveBy(srcEdificio.getPosition());
+        setAcceleration(0);
+        setSpeed(5);
+
 
 
         Edificio trgEdificio = Edificio.getEdificioById(order.getIdEdificio());
