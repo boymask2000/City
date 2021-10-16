@@ -32,8 +32,6 @@ public class BaseActor3D {
 
     public BaseActor3D(float x, float y, float z, Stage3D s)
     {
-
-
         modelData = null;
         position = new Vector3(x,y,z);
         rotation = new Quaternion();

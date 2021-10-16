@@ -1,5 +1,6 @@
 package com.boymask.city;
 
+import com.badlogic.gdx.math.Vector3;
 import com.boymask.city.core.Mover;
 import com.boymask.city.core.ObjModel;
 import com.boymask.city.edifici.Edificio;
@@ -22,7 +23,7 @@ public class Carrier extends Mover {
 
     public Carrier(int x, int y, int z, City city) {
         super(x, y, z, city.getMainStage3D());
-        this.city=city;
+        this.city = city;
 
         loadObjModel("edifici/obj/fence_wide.obj");
         this.orderManager = city.getOrderManager();
@@ -76,16 +77,16 @@ public class Carrier extends Mover {
 
         //setTarget(srcEdificio.getPosition());
         if (srcEdificio == null) {
-            System.out.println("Non trovato fornitore  per "+order.getTipoMerce() );
+            System.out.println("Non trovato fornitore  per " + order.getTipoMerce());
             orderManager.putOrder(order);
             setWorking(false);
             return;
         }
         System.out.println("Cerrier trovato fornitore : " + srcEdificio);
-        setAcceleration(1);
-        setSpeed(5);
-        accelerateAtAngle(10);
-
+    //    setAcceleration(1);
+      //  setSpeed(5);
+        //     accelerateAtAngle(10);
+        setTarget(srcEdificio.getPosition());
 
 
         Edificio trgEdificio = Edificio.getEdificioById(order.getIdEdificio());
@@ -136,7 +137,7 @@ public class Carrier extends Mover {
 
     private Edificio searchFornitore(TipoMerce tipoMerce) {
 
-        MerceDisponibile md =city.getInventarioGlobale().getMerce(tipoMerce);
+        MerceDisponibile md = city.getInventarioGlobale().getMerce(tipoMerce);
         if (md != null) {
             Edificio ed = Edificio.getEdificioById(md.getIdEdificio());
             return ed;
