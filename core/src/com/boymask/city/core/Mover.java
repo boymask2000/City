@@ -10,6 +10,7 @@ public abstract class Mover extends ObjModel {
     private float acceleration;
     private float maxSpeed;
     private float deceleration;
+    private Vector3 target;
 
     public Mover(int x, int y, int z, Stage3D st) {
         super(x, y, z, st);
@@ -84,11 +85,23 @@ public abstract class Mover extends ObjModel {
         setSpeed(speed);
 
         moveBy(velocityVec.x * dt, velocityVec.y * dt, velocityVec.z * dt);
+   /*     if (target != null) {
+        float dst = getPosition().dst(target);
+        System.out.println("DST: " + dst);
+    }*/
+        if( target!=null && getPosition().dst(target)<0.1) {
+            target=null;
+            velocityVec = new Vector3(0, 0, 0);
+
+            targetHit();
+        }
 
         //   accelerationVec.set(0, 0);
     }
+    public abstract void targetHit();
 
     public void setTarget(int x, int y, int z) {
+        target = new Vector3(x, y, z);
         Vector3 pos = getPosition();
         int dx = (int) (x - pos.x);
         int dy = (int) (y - pos.y);

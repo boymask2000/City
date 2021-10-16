@@ -155,4 +155,9 @@ public class Carrier extends Mover {
         System.out.println("******  working --> " + working);
         this.working = working;
     }
+
+    @Override
+    public void targetHit() {
+
+    }
 }
