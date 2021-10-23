@@ -20,6 +20,14 @@ public class Carrier extends Mover {
     private final OrderManager orderManager;
     private final City city;
     private TipoMerce carico = null;
+    private Edificio trgEdificio;
+
+    private enum Phase {IDLE, TAKE, DELIVER}
+
+    ;
+
+    private Phase currentPhase = Phase.IDLE;
+    private Edificio currentTarget = null;
 
     public Carrier(int x, int y, int z, City city) {
         super(x, y, z, city.getMainStage3D());
@@ -65,7 +73,6 @@ public class Carrier extends Mover {
         System.out.println("WORK ");
         Order order = orderManager.getNextOrder();
 
-
         if (order == null) {
             System.out.println("non trovato ");
             setWorking(false);
@@ -83,48 +90,21 @@ public class Carrier extends Mover {
             return;
         }
         System.out.println("Cerrier trovato fornitore : " + srcEdificio);
-    //    setAcceleration(1);
-      //  setSpeed(5);
+        //    setAcceleration(1);
+        //  setSpeed(5);
         //     accelerateAtAngle(10);
-        setTarget(srcEdificio.getPosition());
 
 
-        Edificio trgEdificio = Edificio.getEdificioById(order.getIdEdificio());
+        trgEdificio = Edificio.getEdificioById(order.getIdEdificio());
 
         MerceDisponibile md = new MerceDisponibile(trgEdificio.getIdEdificio(), order.getTipoMerce());
-        //    job = createJob(srcEdificio, trgEdificio, md);
+
         setWorking(true);
-
-
-        return;
+        currentPhase = Phase.TAKE;
+        currentTarget = srcEdificio;
+        setTarget(srcEdificio.getPosition());
     }
 
-
-    private Job createJob(Edificio srcEdificio, Edificio trgEdificio, MerceDisponibile m) {
-        TaskOperation op1 = TaskOperation.VAI;
-        JobTask jt1 = new JobTask(op1, srcEdificio, null);
-
-        TaskOperation op2 = TaskOperation.CARICA;
-        JobTask jt2 = new JobTask(op2, srcEdificio, m.getTipoMerce());
-
-        TaskOperation op3 = TaskOperation.VAI;
-        JobTask jt3 = new JobTask(op3, trgEdificio, null);
-
-        TaskOperation op4 = TaskOperation.SCARICA;
-        JobTask jt4 = new JobTask(op4, trgEdificio, m.getTipoMerce());
-
-        List<JobTask> tasks = new ArrayList<>();
-        tasks.add(jt1);
-        tasks.add(jt2);
-        tasks.add(jt3);
-        tasks.add(jt4);
-
-        //   Job job = new Job(this, tasks, false);
-
-
-        return null;
-
-    }
 
     public TipoMerce getCarico() {
         return carico;
@@ -142,8 +122,6 @@ public class Carrier extends Mover {
             Edificio ed = Edificio.getEdificioById(md.getIdEdificio());
             return ed;
         }
-
-
         return null;
     }
 
@@ -159,5 +137,18 @@ public class Carrier extends Mover {
     @Override
     public void targetHit() {
 
+        switch (currentPhase) {
+            case IDLE:
+                break;
+            case TAKE:
+                currentPhase = Phase.DELIVER;
+                currentTarget = trgEdificio;
+                setTarget(trgEdificio.getPosition());
+                break;
+            case DELIVER:
+                currentPhase = Phase.IDLE;
+                currentTarget = null;
+                break;
+        }
     }
 }

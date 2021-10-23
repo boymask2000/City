@@ -89,8 +89,8 @@ public abstract class Mover extends ObjModel {
         float dst = getPosition().dst(target);
         System.out.println("DST: " + dst);
     }*/
-        if( target!=null && getPosition().dst(target)<0.1) {
-            target=null;
+        if (target != null && getPosition().dst(target) < 0.2) {
+            target = null;
             velocityVec = new Vector3(0, 0, 0);
 
             targetHit();
@@ -98,6 +98,7 @@ public abstract class Mover extends ObjModel {
 
         //   accelerationVec.set(0, 0);
     }
+
     public abstract void targetHit();
 
     public void setTarget(int x, int y, int z) {

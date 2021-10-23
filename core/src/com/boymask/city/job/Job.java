@@ -53,7 +53,7 @@ public class Job {
 
         JobTask task = tasks.get(currenTask);
 
-        task.exec(actor);
+        task.exec();
         return false;
         //    actor.notifyJob();
 
