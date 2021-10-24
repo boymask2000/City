@@ -17,9 +17,9 @@ import java.util.Map;
 public class TableDescrEdificio extends Table {
     List<Label> tm = new ArrayList<>();
     BitmapFont font = new BitmapFont();
-    Label nomeEdificio=new Label("", new Label.LabelStyle(font, Color.WHITE));
+    Label nomeEdificio = new Label("", new Label.LabelStyle(font, Color.WHITE));
 
-    public TableDescrEdificio(){
+    public TableDescrEdificio() {
         add(nomeEdificio);
         row();
     }
@@ -28,22 +28,21 @@ public class TableDescrEdificio extends Table {
         nomeEdificio.setText(ed.getTipoEdificio().name());
         Map<String, Integer> vals = new HashMap<>();
 
-        if( ed instanceof EdificioProduzione){
-            EdificioProduzione prd = (EdificioProduzione) ed;
-            VoceInventario ll = prd.getMerciInUscita();
+
+        List<VoceInventario> lst = ed.getInventario().getMerci();
+        for (VoceInventario ll : lst) {
             String name = ll.getTipo().name();
             Integer num = ll.getGiacenza();
             vals.put(name, num);
         }
+
         Inventario inventario = ed.getInventario();
         List<VoceInventario> mm = inventario.getMerci();
-        for( VoceInventario ll :mm){
+        for (VoceInventario ll : mm) {
             String name = ll.getTipo().name();
             Integer num = ll.getGiacenza();
             vals.put(name, num);
         }
-
-
 
 
         for (int i = 0; i < vals.size() - tm.size(); i++) {
@@ -54,11 +53,10 @@ public class TableDescrEdificio extends Table {
             tm.add(ll);
         }
 
-        int i=0;
-        for(Map.Entry<String, Integer> en: vals.entrySet())
-        {
+        int i = 0;
+        for (Map.Entry<String, Integer> en : vals.entrySet()) {
 
-            tm.get(i).setText(en.getKey()+" "+en.getValue());
+            tm.get(i).setText(en.getKey() + " " + en.getValue());
 
             i++;
         }

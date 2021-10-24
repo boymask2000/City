@@ -130,6 +130,9 @@ public class UIManager {
                     return false;
 
                 Carrier.create(1,1,15, city);
+                System.out.println("In Carrier: "
+
+                        );
                 return true;
             }
         });

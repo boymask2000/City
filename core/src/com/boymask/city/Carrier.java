@@ -21,9 +21,9 @@ public class Carrier extends Mover {
     private final City city;
     private TipoMerce carico = null;
     private Edificio trgEdificio;
+    private Edificio srcEdificio;
 
     private enum Phase {IDLE, TAKE, DELIVER}
-
     ;
 
     private Phase currentPhase = Phase.IDLE;
@@ -80,8 +80,8 @@ public class Carrier extends Mover {
         }
         System.out.println("Cerrier trovato ordine : " + order);
 
-        Edificio srcEdificio = searchFornitore(order.getTipoMerce());
-
+        srcEdificio = searchFornitore(order.getTipoMerce());
+        carico = order.getTipoMerce();
         //setTarget(srcEdificio.getPosition());
         if (srcEdificio == null) {
             System.out.println("Non trovato fornitore  per " + order.getTipoMerce());
@@ -90,16 +90,11 @@ public class Carrier extends Mover {
             return;
         }
         System.out.println("Cerrier trovato fornitore : " + srcEdificio);
-        //    setAcceleration(1);
-        //  setSpeed(5);
-        //     accelerateAtAngle(10);
-
 
         trgEdificio = Edificio.getEdificioById(order.getIdEdificio());
 
         MerceDisponibile md = new MerceDisponibile(trgEdificio.getIdEdificio(), order.getTipoMerce());
 
-        setWorking(true);
         currentPhase = Phase.TAKE;
         currentTarget = srcEdificio;
         setTarget(srcEdificio.getPosition());
@@ -125,10 +120,6 @@ public class Carrier extends Mover {
         return null;
     }
 
-    public synchronized boolean isWorking() {
-        return working;
-    }
-
     public synchronized void setWorking(boolean working) {
         System.out.println("******  working --> " + working);
         this.working = working;
@@ -141,11 +132,20 @@ public class Carrier extends Mover {
             case IDLE:
                 break;
             case TAKE:
+                int giacenza = srcEdificio.getInventario().getGiacenza(carico);
+                if (giacenza <= 0) {
+                    currentPhase = Phase.IDLE;
+                    currentTarget = null;
+                    break;
+                }
+                srcEdificio.getInventario().getMerce(carico);
+
                 currentPhase = Phase.DELIVER;
                 currentTarget = trgEdificio;
                 setTarget(trgEdificio.getPosition());
                 break;
             case DELIVER:
+                trgEdificio.getInventario().addMerce(carico, 1);
                 currentPhase = Phase.IDLE;
                 currentTarget = null;
                 break;

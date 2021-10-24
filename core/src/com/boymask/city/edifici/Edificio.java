@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Edificio extends ObjModel {
-
+    protected int maxInventario = 5;
     private static int CURRID = 0;
     protected final TipoEdificio tipoEdificio;
     protected final City city;
@@ -121,9 +121,9 @@ public abstract class Edificio extends ObjModel {
         return b;
     }
 
-    public int getGiacenza() {
+   /* public int getGiacenza() {
         return inventario.getMerci().size();
-    }
+    }*/
 
 
     @Override

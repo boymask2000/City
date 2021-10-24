@@ -1,73 +1,82 @@
 package com.boymask.city.merci;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Inventario {
 
-    private List<VoceInventario> merci = new ArrayList<>();
+    private Map<TipoMerce, VoceInventario> map = new HashMap<>();
 
     public void addMerce(TipoMerce tipo, int n) {
-        VoceInventario v = null;
-        for (VoceInventario voce : merci)
-            if (voce.getTipo() == tipo) {
-                v = voce;
-                break;
-            }
+        VoceInventario v = map.get(tipo);
         if (v == null) {
-            v = new VoceInventario(tipo, n);
-            merci.add(v);
+            v = new VoceInventario(tipo, 0);
+            map.put(tipo, v);
         }
         v.increase(n);
 
     }
-
+    public VoceInventario getVoce( TipoMerce tipo){
+        return map.get(tipo);
+    }
     public void dump() {
 
-        for (VoceInventario m : merci)
+        for (VoceInventario m :  getMerci() )
             System.out.println(m.toString());
     }
 
+    public boolean getMerce(TipoMerce tipo) {
+        VoceInventario v = map.get(tipo);
+        if (v == null) {
+            return false;
+        }
+        v.increase(-1);
+        return true;
 
-    public boolean getMerce(TipoMerce t) {
-        for (VoceInventario m : merci)
-            if (m.getTipo() == t && m.getGiacenza() > 0) {
-                m.setGiacenza(m.getGiacenza() - 1);
-                return true;
-            }
-        return false;
     }
 
-    public int getGiacenza(TipoMerce t) {
-        for (VoceInventario m : merci)
-            if (m.getTipo() == t) return m.getGiacenza();
-        return 0;
+    public int getGiacenza(TipoMerce tipo) {
+        VoceInventario v = map.get(tipo);
+        if (v == null) {
+            return 0;
+        }
+        return v.getGiacenza();
     }
 
     public boolean in(VoceInventario v) {
-
-        for (VoceInventario m : merci)
-            if (v.getTipo() == m.getTipo()) {
-                if (v.getGiacenza() <= m.getGiacenza()) return true;
-                return false;
-            }
-        return false;
+        VoceInventario m = map.get(v.getTipo());
+        if (m == null) {
+            return false;
+        }
+        return v.getGiacenza() <= m.getGiacenza();
     }
 
     public void decurta(VoceInventario v) {
-        for (VoceInventario m : merci)
-            if (v.getTipo() == m.getTipo()) {
-                m.setGiacenza(m.getGiacenza() - v.getGiacenza());
-            }
+        VoceInventario m = map.get(v.getTipo());
+        if (m == null) {
+            return;
+        }
+        int diff = m.getGiacenza() - v.getGiacenza();
+        if (diff < 0) diff = 0;
+        m.setGiacenza(diff);
+
+
     }
 
     public void addVoce(VoceInventario v) {
-        merci.add(v);
+        VoceInventario m = map.get(v.getTipo());
+        if (m == null) {
+            map.put(v.getTipo(), v);
+            return;
+        }
+        m.setGiacenza(m.getGiacenza() + v.getGiacenza());
+
     }
 
     public List<VoceInventario> getMerci() {
-        return merci;
+        return new ArrayList<VoceInventario>(map.values());
+
     }
-
-
 }
